@@ -24,7 +24,7 @@ More to come soon!
 ## Contributors
 
 * Grant Bushoven
-* Sterly Deracy
+* [Sterly Deracy](https://github.com/sderacy)
 * Peter Kelly
 * Daniel Melamed
 * Joseph Oczkowski
