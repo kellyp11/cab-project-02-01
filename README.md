@@ -23,13 +23,13 @@ More to come soon!
 
 ## Contributors
 
-* Grant Bushoven
+* [Grant Bushoven](https://github.com/grantbushoven)
 * [Sterly Deracy](https://github.com/sderacy)
-* Peter Kelly
-* Daniel Melamed
-* Joseph Oczkowski
-* Matthew Seitz
-* Amy Vargas
+* [Peter Kelly](https://github.com/kellyp11)
+* [Daniel Melamed](https://github.com/dmelamed5)
+* [Joseph Oczkowski](https://github.com/Joe-Oczkowski)
+* [Matthew Seitz](https://github.com/matt2970)
+* [Amy Vargas](https://github.com/A-Vargas-GP)
 
 
 ## Acknowledgements
