@@ -1,0 +1,363 @@
+CREATE TABLE BUILDING (Portfolio_Manager_ID int UNIQUE, Name varchar(30) UNIQUE, Construction_Status varchar(50), Gross_Floor_Area int, PRIMARY KEY (Portfolio_Manager_ID, Name));
+CREATE TABLE BUILDING_TYPE (Name varchar(50) PRIMARY KEY references BUILDING(Name), Property_Type varchar(30));
+CREATE TABLE ENERGY_SOURCE (Portfolio_Manager_Meter_ID int UNIQUE, MeterName varchar(30) UNIQUE, Meter_Type varchar(30), PRIMARY KEY (Portfolio_Manager_Meter_ID, MeterName));
+CREATE TABLE ENERGY_SOURCE_COST (Portfolio_Manager_Meter_ID int REFERENCES ENERGY_SOURCE(Portfolio_Manager_Meter_ID) PRIMARY KEY, cost float, Usage_Amount int);
+CREATE TABLE FUEL_OIL (Portfolio_Manager_Meter_ID int REFERENCES ENERGY_SOURCE(Portfolio_Manager_Meter_ID), Units varchar(10), MeterType varchar(30));
+CREATE TABLE NATURAL_GAS (Portfolio_Manager_Meter_ID int REFERENCES ENERGY_SOURCE(Portfolio_Manager_Meter_ID), Units varchar(10), MeterType varchar(30));
+CREATE TABLE ELECTRIC_GRID (Portfolio_Manager_Meter_ID int REFERENCES ENERGY_SOURCE(Portfolio_Manager_Meter_ID), Units varchar(10), MeterType varchar(30));
+CREATE TABLE OTHER_SOURCE (Portfolio_Manager_Meter_ID int REFERENCES ENERGY_SOURCE(Portfolio_Manager_Meter_ID), Units varchar(10), MeterType varchar(30));
+CREATE TABLE POWERED_BY (Portfolio_Manager_Meter_ID int REFERENCES ENERGY_SOURCE(Portfolio_Manager_Meter_ID), Portfolio_Manager_ID int REFERENCES BUILDING(Portfolio_Manager_ID), PRIMARY KEY (Portfolio_Manager_ID, Portfolio_Manager_Meter_ID));
+SELECT * FROM ENERGY_SOURCE
+;
+\s hi
+\q
+\d+
+DROP TABLE DATE_INTERVAL
+;
+CREATE TABLE DATE_INTERVAL (Meter_Consumption_ID varchar(20) UNIQUE PRIMARY KEY, StartDate date, TypeOfSeason varchar(7) , StartTimestamp time);
+\COPY DATE_INTERVAL(Meter_Consumption_ID, StartDate, TypeOfSeason, StartTimestamp)
+FROM '/home/lion/Downloads/DI.csv'
+DELIMITER ','
+CSV HEADER;
+\s victoryscrech
+\d+
+CREATE TABLE MAPS_TO (Meter_Consumption_ID int REFERENCES DATE_INTERVAL(Meter_Consumption_ID), Portfolio_Manager_ID int REFERENCES ENERGY_SOURCE(Portfolio_Manager_Meter_ID), PRIMARY KEY (Meter_Consumption_ID, Portfolio_Manager_Meter_ID);
+)
+;
+CREATE TABLE MAPS_TO (Meter_Consumption_ID int REFERENCES DATE_INTERVAL(Meter_Consumption_ID), Portfolio_Manager_ID int REFERENCES ENERGY_SOURCE(Portfolio_Manager_Meter_ID), PRIMARY KEY (Meter_Consumption_ID, Portfolio_Manager_Meter_ID);
+)
+;
+CREATE TABLE MAPS_TO (Meter_Consumption_ID int REFERENCES DATE_INTERVAL(Meter_Consumption_ID), Portfolio_Manager_ID int REFERENCES ENERGY_SOURCE(Portfolio_Manager_Meter_ID), PRIMARY KEY (Meter_Consumption_ID, Portfolio_Manager_Meter_ID));
+SELECT * FROM ENERGY_SOURCE
+;
+CREATE TABLE MAPS_TO (Meter_Consumption_ID int REFERENCES DATE_INTERVAL(Meter_Consumption_ID), Portfolio_Manager_ID int REFERENCES ENERGY_SOURCE(portfolio_manager_meter_ID), PRIMARY KEY (Meter_Consumption_ID, portfolio_manager_meter_ID));
+CREATE TABLE MAPS_TO (Meter_Consumption_ID int REFERENCES DATE_INTERVAL(Meter_Consumption_ID), Portfolio_Manager_ID int REFERENCES ENERGY_SOURCE(portfolio_manager_meter_id), PRIMARY KEY (Meter_Consumption_ID, portfolio_manager_meter_id));
+CREATE TABLE MAPS_TO (Meter_Consumption_ID int REFERENCES DATE_INTERVAL(Meter_Consumption_ID), portfolio_manager_meter_id int REFERENCES ENERGY_SOURCE(portfolio_manager_meter_id), PRIMARY KEY (Meter_Consumption_ID, portfolio_manager_meter_id));
+CREATE TABLE MAPS_TO (Meter_Consumption_ID varchar(20) REFERENCES DATE_INTERVAL(Meter_Consumption_ID), Portfolio_Manager_Meter_ID int REFERENCES ENERGY_SOURCE(Portfolio_Manager_Meter_ID), PRIMARY KEY (Meter_Consumption_ID, Portfolio_Manager_Meter_ID));
+\COPY MAPS_TO(Meter_Consumption_ID, Portfolio_Manager_Meter_ID)
+FROM '/home/lion/Downloads/MT.csv'
+DELIMITER ','
+CSV HEADER;
+\s victoryagain
+\q
+CREATE VIEW YEAR_ENERGY_SOURCE_KBTU_COST AS
+SELECT EXTRACT(YEAR FROM StartDate), SUM(Cost), Usage_Amount, Usage_Amount/cast(SUM(Cost) as float) AS kbtu/cost
+FROM DATE_INTERVAL NATURAL JOIN MAPS_TO NATURAL JOIN ENERGY_SOURCE_COST NATURAL JOIN ENERGY_SOURCE
+GROUP BY EXTRACT(YEAR FROM StartDate), Usage_Amount;
+SELECT EXTRACT(YEAR FROM StartDate), SUM(Cost), Usage_Amount, Usage_Amount/cast(SUM(Cost) as float) AS kbtuPerCost
+FROM DATE_INTERVAL NATURAL JOIN MAPS_TO NATURAL JOIN ENERGY_SOURCE_COST NATURAL JOIN ENERGY_SOURCE
+GROUP BY EXTRACT(YEAR FROM StartDate), Usage_Amount;
+\s YES
+CREATE VIEW MONTH_ENERGY_SOURCE_KBTU_COST AS
+SELECT EXTRACT(MONTH FROM StartDate), SUM(Cost), Usage_Amount, Usage_Amount/cast(SUM(Cost) as float) AS kbtuPerCost
+FROM DATE_INTERVAL NATURAL JOIN MAPS_TO NATURAL JOIN ENERGY_SOURCE_COST NATURAL JOIN ENERGY_SOURCE
+GROUP BY EXTRACT(MONTH FROM StartDate), Usage_Amount;
+CREATE VIEW YEAR_ENERGY_SOURCE_KBTU_COST AS
+SELECT EXTRACT(YEAR FROM StartDate), SUM(Cost), Usage_Amount, Usage_Amount/cast(SUM(Cost) as float) AS kbtuPerCost
+FROM DATE_INTERVAL NATURAL JOIN MAPS_TO NATURAL JOIN ENERGY_SOURCE_COST NATURAL JOIN ENERGY_SOURCE
+GROUP BY EXTRACT(YEAR FROM StartDate), Usage_Amount;
+CREATE VIEW MINUTE_ENERGY_SOURCE_KBTU_COST AS
+SELECT StartTimestamp, SUM(Cost), Usage_Amount, Usage_Amount/(cast(SUM(Cost) as float) * 30 * 24 * 4) AS kbtuPerCost
+FROM DATE_INTERVAL NATURAL JOIN MAPS_TO NATURAL JOIN ENERGY_SOURCE_COST NATURAL JOIN ENERGY_SOURCE
+GROUP BY StartTimestamp, Usage_Amount;
+CREATE VIEW YEAR_METER_COST AS
+SELECT EXTRACT(YEAR FROM StartDate), Meter_Type, Usage_Amount, Usage_Amount/cast(SUM(Cost) as float) AS kbtuPerCost
+FROM DATE_INTERVAL NATURAL JOIN MAPS_TO NATURAL JOIN ENERGY_SOURCE_COST NATURAL JOIN ENERGY_SOURCE
+GROUP BY EXTRACT(YEAR FROM StartDate), Meter_Type, Usage_Amount;
+CREATE VIEW MONTH_METER_COST AS
+SELECT EXTRACT(MONTH FROM StartDate), Meter_Type, Usage_Amount, Usage_Amount/cast(SUM(Cost) as float) AS kbtuPerCost
+FROM DATE_INTERVAL NATURAL JOIN MAPS_TO NATURAL JOIN ENERGY_SOURCE_COST NATURAL JOIN ENERGY_SOURCE
+GROUP BY EXTRACT(MONTH FROM StartDate), Meter_Type, Usage_Amount;
+CREATE VIEW MINUTE_METER_COST AS
+SELECT StartTimestamp, Meter_Type, Usage_Amount, Usage_Amount/(cast(SUM(Cost) as float) * 30 * 24 * 4) AS kbtuPerCost
+FROM DATE_INTERVAL NATURAL JOIN MAPS_TO NATURAL JOIN ENERGY_SOURCE_COST NATURAL JOIN ENERGY_SOURCE
+;
+CREATE VIEW MINUTE_METER_COST AS
+SELECT StartTimestamp, Meter_Type, Usage_Amount, Usage_Amount/(cast(SUM(Cost) as float) * 30 * 24 * 4) AS kbtuPerCost
+FROM DATE_INTERVAL NATURAL JOIN MAPS_TO NATURAL JOIN ENERGY_SOURCE_COST NATURAL JOIN ENERGY_SOURCE
+GROUP BY StartTimestamp, Meter_Type, Usage_Amount;
+CREATE VIEW MONTH_USAGE AS
+SELECT StartDate, Meter_Type, Usage_Amount
+FROM DATE_INTERVAL NATURAL JOIN MAPS_TO NATURAL JOIN ENERGY_SOURCE_COST NATURAL JOIN ENERGY_SOURCE
+GROUP BY StartDate, Meter_Type, Usage_Amount;
+CREATE VIEW SEASON_USAGE AS
+SELECT StartDate, TypeOfSeason, Usage_Amount
+FROM DATE_INTERVAL NATURAL JOIN MAPS_TO NATURAL JOIN ENERGY_SOURCE_COST NATURAL JOIN ENERGY_SOURCE
+GROUP BY StartDate, TypeOfSeason, Usage_Amount;
+\s Everything done
+SELECT *
+FROM SEASON_USAGE;
+SELECT *
+FROM YEAR_ENERGY_SOURCE_KBTU_COST;
+SELECT *
+FROM MONTH_ENERGY_SOURCE_KBTU_COST;
+SELECT *
+FROM MINUTE_ENERGY_SOURCE_KBTU_COST;
+SELECT *
+FROM YEAR_METER_COST;
+SELECT *
+FROM MONTH_METER_COST;
+SELECT *
+FROM MINUTE_METER_COST;
+SELECT *
+FROM SEASON_USAGE;
+SELECT *
+FROM MONTH_USAGE;
+\s Testviews
+INSERT INTO DATE_INTERVAL
+VALUES(1234, 2001-02-11, 2001-2-12, Winter, 00:00:00);
+INSERT INTO DATE_INTERVAL
+VALUES(1234, 2001-02-11, 2001-2-12,'Winter','00:00:00');
+INSERT INTO DATE_INTERVAL
+VALUES(1234, 2001-02-11, 2001-2-12,'Winter',00:00:00);
+INSERT INTO DATE_INTERVAL
+VALUES(1234, 2001-02-11,'Winter',00:00:00);
+INSERT INTO DATE_INTERVAL
+VALUES(1234, '2001-02-11','Winter', '00:00:00');
+SELECT * FROM DATE_INTERVAL
+;
+INSERT INTO BUILDING
+VALUES(1234, 'IKE', 'Never', 5);
+INSERT INTO BUILDING_TYPE
+VALUES('Bedroom', 'Cool');
+INSERT INTO BUILDING_TYPE
+VALUES('ResidenceHall/Dormitory, 'Cool');
+;
+'
+)
+;
+INSERT INTO BUILDING_TYPE
+VALUES('IKE', 'Cool');
+INSERT INTO FUEL_OIL
+VALUES (1234. 'kbtu', 'therms'); 
+INSERT INTO FUEL_OIL
+VALUES (1234, 'kbtu', 'fuel oil'); 
+INSERT INTO ENERGY_SOURCE
+VALUES(1234, 'YEET', 'Fuel Oil');
+INSERT INTO FUEL_OIL
+VALUES (1234, 'kbtu', 'fuel oil'); 
+INSERT INTO NATURAL_GAS
+VALUES (1234, 'kbtu', 'fuel oil'); 
+INSERT INTO ELECTRIC_GRID
+VALUES (1234, 'kbtu', 'fuel oil'); 
+INSERT INTO OTHER_SOURCE
+VALUES (1234, 'kbtu', 'fuel oil'); 
+INSERT INTO ENERGY_SOURCE_COST
+VALUES(1234, 0.62, 989);
+UPDATE DATE_INTERVAL
+SET StartDate = ‘09-10-2001’, End Date = ‘10-10-2001’
+WHERE MeterConsumptionID = 1234;
+UPDATE DATE_INTERVAL
+SET StartDate = ‘09-10-2001’
+WHERE MeterConsumptionID = 1234;
+UPDATE DATE_INTERVAL
+SET StartDate = '09-10-2001'
+WHERE MeterConsumptionID = 1234;
+UPDATE DATE_INTERVAL
+SET StartDate = '09-10-2001'
+WHERE Meter_consumption_id = 1234;
+UPDATE DATE_INTERVAL
+SET StartDate = '09-10-2001'
+WHERE meter_consumption_id = 1234;
+UPDATE DATE_INTERVAL
+SET StartDate = '2001-09-10'
+WHERE meter_consumption_id = 1234;
+UPDATE DATE_INTERVAL
+SET StartDate = '2001-09-10'
+WHERE meter_consumption_id = '1234';
+UPDATE BUILDING
+SET Name = 'I like IKE'
+WHERE  Name = 'IKE';
+UPDATE BUILDING_TYPE
+SET Name = 'I like IKE'
+WHERE  Name = 'IKE';
+UPDATE BUILDING, BUILDING_TYPE
+SET Name = 'I like IKE'
+WHERE  Name = 'IKE';
+UPDATE BUILDING AND BUILDING_TYPE
+SET Name = 'I like IKE'
+WHERE  Name = 'IKE';
+SELECT * FROM BUILDING;
+UPDATE BUILDING AND BUILDING_TYPE
+SET Name = 'I like IKE'
+WHERE  portfolio_manager_id=1234;
+UPDATE BUILDING
+SET Name = 'I like IKE'
+WHERE  portfolio_manager_id=1234;
+UPDATE BUILDING, BUILDING_TYPE
+SET Name = 'I like IKE'
+WHERE  portfolio_manager_id=1234;
+UPDATE BUILDING AND BUILDING_TYPE
+SET Name = 'I like IKE'
+WHERE  portfolio_manager_id=1234;
+UPDATE BUILDING_TYPE
+SET Name = 'I like IKE'
+WHERE  portfolio_manager_id=1234;
+UPDATE BUILDING_TYPE
+SET Name = 'I like IKE'
+WHERE  property_name = 'IKE';
+UPDATE BUILDING_TYPE
+SET Name = 'I like IKE'
+WHERE  name = 'IKE';
+CREATE TRIGGER UPDATE_BUILDING
+AFTER UPDATE ON BUILDINGS
+UPDATE BUILDING_TYPE
+WHERE Name = 'IKE';
+select * from building_type;
+UPDATE BUILDING_TYPE
+SET Name = 'I like IKE'
+WHERE  name = 'ASB';
+UPDATE BUILDING_TYPE
+SET Name = 'ASB'
+WHERE  name = 'IKE';
+INSERT INTO BUILDING
+VALUES(1234, 'I like IKE', 'Never', 6);
+INSERT INTO BUILDING
+VALUES(12345, 'I like IKE', 'Never', 6);
+UPDATE BUILDING_TYPE
+SET Name = 'I like IKE'
+WHERE  name = 'IKE';
+select * from building_type;
+\s updates
+select * from building;
+select * from building_type;
+UPDATE BUILDING_TYPE
+SET Property_Type = ‘Dormitory’
+WHERE Property_Type = ‘ResidenceHall/Dormitory’;
+UPDATE BUILDING_TYPE
+SET Property_Type = 'Cooler'
+WHERE Property_Type = 'Cool';
+UPDATE FUEL_OIL
+SET Units = ‘gallons’
+WHERE Units = ‘kbtu’;
+UPDATE FUEL_OIL
+SET Units = 'gallons'
+WHERE Units = 'kbtu';
+UPDATE NATURAL_GAS
+SET Units = 'gallons'
+WHERE Units = 'kbtu';
+UPDATE ELECTRIC_GRID
+SET Units = 'gallons'
+WHERE Units = 'kbtu';
+UPDATE OTHER_SOURCE
+SET Units = 'gallons'
+WHERE Units = 'kbtu';
+SELECT * OTHER_SOURCE;
+SELECT* FROM OTHER_SOURCE;
+SELECT * FROM ENERGY_SOURCE
+;
+UPDATE ENERGY_SOURCE
+SET Meter_Type = 'EL5'
+WHERE Meter_Type = Fuel Oil';
+'
+;
+UPDATE ENERGY_SOURCE
+SET Meter_Type = 'EL5'
+WHERE Name = 'YEET';
+UPDATE ENERGY_SOURCE
+SET Meter_Type = 'EL5'
+WHERE METERame = 'YEET';
+UPDATE ENERGY_SOURCE
+SET Meter_Type = 'EL5'
+WHERE metername = 'YEET';
+SELECT * FROM ENERGY_SOURCE_COST;
+UPDATE ENERGY_SOURCE_COST
+SET Cost = 0
+WHERE UsageAmount = 989;
+UPDATE ENERGY_SOURCE_COST
+SET Cost = 0
+WHERE Usage_Amount = 989;
+\Updatesfinished
+\s Updatesfinished
+SELECT * FROM ENERGY_SOURCE
+;
+SELECT * FROM DATE_INTERVAL
+;
+DELETE FROM DATE_INTERVAL
+WHERE MeterConsumptionID = '1234';
+DELETE FROM DATE_INTERVAL
+WHERE Meter_Consumption_ID = '1234';
+SELECT * FROM DATE_INTERVAL
+;
+DELETE FROM BUILDING
+WHERE nAME ='IKE';
+SELECT * FROM BUILDING;
+DELETE FROM BUILDING
+WHERE nAME ='I like IKE';
+DELETE FROM BUILDING_TYPE
+WHERE nAME ='I like IKE';
+DELETE FROM NATURAL_GAS
+WHERE PortfolioManagerMeterID = 1234;
+DELETE FROM NATURAL_GAS
+WHERE Portfolio_Manager_Meter_ID = 1234;
+DELETE FROM fuel_oil
+WHERE Portfolio_Manager_Meter_ID = 1234;
+DELETE FROM electric_grid
+WHERE Portfolio_Manager_Meter_ID = 1234;
+DELETE FROM other_source
+WHERE Portfolio_Manager_Meter_ID = 1234;
+DELETE FROM energy_source
+WHERE Portfolio_Manager_Meter_ID = 1234;
+DELETE FROM energy_source_cost
+WHERE Portfolio_Manager_Meter_ID = 1234;
+DELETE FROM energy_source
+WHERE Portfolio_Manager_Meter_ID = 1234;
+\FINISHED?
+\s FINISHED?
+SELECT * FROM yEAR_ENERGY_SOURCE_KBTU_COST;
+SELECT * FROM month_ENERGY_SOURCE_KBTU_COST;
+SELECT * FROM minute_ENERGY_SOURCE_KBTU_COST;
+CREATE OR REPLACE VIEW MINUTE_ENERGY_SOURCE_KBTU_COST AS
+SELECT StartTimestamp, Cost, Usage_Amount, Usage_Amount/(cast(Cost as float) * 30 * 24 * 4) AS kbtuPerCost
+FROM DATE_INTERVAL NATURAL JOIN MAPS_TO NATURAL JOIN ENERGY_SOURCE_COST NATURAL JOIN ENERGY_SOURCE
+GROUP BY StartDate, StartTimestamp, Usage_Amount;
+CREATE OR REPLACE VIEW MINUTE_ENERGY_SOURCE_KBTU_COST AS
+SELECT StartTimestamp, Cost, Usage_Amount, Usage_Amount/(cast(Cost as float) * 30 * 24 * 4) AS kbtuPerCost
+FROM DATE_INTERVAL NATURAL JOIN MAPS_TO NATURAL JOIN ENERGY_SOURCE_COST NATURAL JOIN ENERGY_SOURCE
+GROUP BY StartDate, StartTimestamp, Usage_Amount, Cost;
+DROP VIEW MINUTE_ENERGY_SOURCE_KBTU_COST;
+CREATE OR REPLACE VIEW MINUTE_ENERGY_SOURCE_KBTU_COST AS
+SELECT StartTimestamp, Cost, Usage_Amount, Usage_Amount/(cast(Cost as float) * 30 * 24 * 4) AS kbtuPerCost
+FROM DATE_INTERVAL NATURAL JOIN MAPS_TO NATURAL JOIN ENERGY_SOURCE_COST NATURAL JOIN ENERGY_SOURCE
+GROUP BY StartDate, StartTimestamp, Usage_Amount, Cost;
+SELECT * FROM minute_ENERGY_SOURCE_KBTU_COST;
+DROP VIEW MINUTE_ENERGY_SOURCE_KBTU_COST;
+CREATE VIEW MINUTE_ENERGY_SOURCE_KBTU_COST AS
+SELECT StartTimestamp, cast(Cost as float)/30 * 24 * 4, Usage_Amount, Usage_Amount/(cast(Cost as float) * 30 * 24 * 4) AS kbtuPerCost
+FROM DATE_INTERVAL NATURAL JOIN MAPS_TO NATURAL JOIN ENERGY_SOURCE_COST NATURAL JOIN ENERGY_SOURCE
+GROUP BY StartDate, StartTimestamp, Usage_Amount, Cost;
+SELECT * FROM minute_ENERGY_SOURCE_KBTU_COST;
+DROP VIEW MINUTE_ENERGY_SOURCE_KBTU_COST;
+CREATE VIEW MINUTE_ENERGY_SOURCE_KBTU_COST AS
+SELECT StartTimestamp, cast(Cost as float)/(30 * 24 * 4) AS cost, Usage_Amount, Usage_Amount/(cast(Cost as float) * 30 * 24 * 4) AS kbtuPerCost
+FROM DATE_INTERVAL NATURAL JOIN MAPS_TO NATURAL JOIN ENERGY_SOURCE_COST NATURAL JOIN ENERGY_SOURCE
+GROUP BY StartDate, StartTimestamp, Usage_Amount, Cost;
+SELECT * FROM minute_ENERGY_SOURCE_KBTU_COST;
+\s YESSSSSS
+DROP VIEW MINUTE_ENERGY_SOURCE_KBTU_COST;
+CREATE VIEW MINUTE_ENERGY_SOURCE_KBTU_COST AS
+SELECT StartDate, StartTimestamp, cast(Cost as float)/(30 * 24 * 4) AS cost, Usage_Amount, Usage_Amount/(cast(Cost as float) * 30 * 24 * 4) AS kbtuPerCost
+FROM DATE_INTERVAL NATURAL JOIN MAPS_TO NATURAL JOIN ENERGY_SOURCE_COST NATURAL JOIN ENERGY_SOURCE
+GROUP BY StartDate, StartTimestamp, Usage_Amount, Cost;
+SELECT * FROM minute_ENERGY_SOURCE_KBTU_COST;
+DROP VIEW MINUTE_ENERGY_SOURCE_KBTU_COST;
+CREATE VIEW MINUTE_ENERGY_SOURCE_KBTU_COST AS
+SELECT StartDate, StartTimestamp, cast(Cost as float)/(30 * 24 * 4) AS cost, Usage_Amount, Usage_Amount/(cast(Cost as float) * 30 * 24 * 4) AS kbtuPerCost
+FROM DATE_INTERVAL NATURAL JOIN MAPS_TO NATURAL JOIN ENERGY_SOURCE_COST NATURAL JOIN ENERGY_SOURCE
+GROUP BY StartDate, StartTimestamp, Usage_Amount, Cost
+ORDER BY ASCEND;
+CREATE VIEW MINUTE_ENERGY_SOURCE_KBTU_COST AS
+SELECT StartDate, StartTimestamp, cast(Cost as float)/(30 * 24 * 4) AS cost, Usage_Amount, Usage_Amount/(cast(Cost as float) * 30 * 24 * 4) AS kbtuPerCost
+FROM DATE_INTERVAL NATURAL JOIN MAPS_TO NATURAL JOIN ENERGY_SOURCE_COST NATURAL JOIN ENERGY_SOURCE
+GROUP BY StartDate, StartTimestamp, Usage_Amount, Cost
+ORDER BY StartDate ASC;
+SELECT * FROM minute_ENERGY_SOURCE_KBTU_COST;
+\s YESSSSS
+DROP VIEW MINUTE_ENERGY_SOURCE_KBTU_COST;
+CREATE VIEW MINUTE_ENERGY_SOURCE_KBTU_COST AS
+SELECT StartDate, StartTimestamp, cast(Cost as float)/(30 * 24 * 4) AS cost, cast(Usage_Amount as float)/ (30*24*4) AS Usage_Amt, Usage_Amount/(cast(Cost as float) * 30 * 24 * 4) AS kbtuPerCost
+FROM DATE_INTERVAL NATURAL JOIN MAPS_TO NATURAL JOIN ENERGY_SOURCE_COST NATURAL JOIN ENERGY_SOURCE
+GROUP BY StartDate, StartTimestamp, Usage_Amount, Cost
+ORDER BY StartDate ASC;
+SELECT * FROM minute_ENERGY_SOURCE_KBTU_COST;
+\s FINAL
