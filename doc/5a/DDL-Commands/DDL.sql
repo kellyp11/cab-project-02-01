@@ -20,50 +20,43 @@ CREATE TABLE MAPS_TO (Meter_Consumption_ID varchar(20) REFERENCES DATE_INTERVAL(
 
 CREATE TABLE POWERED_BY (Portfolio_Manager_Meter_ID int REFERENCES ENERGY_SOURCE(Portfolio_Manager_Meter_ID), Portfolio_Manager_ID int REFERENCES BUILDING(Portfolio_Manager_ID), PRIMARY KEY (Portfolio_Manager_ID, Portfolio_Manager_Meter_ID));
 
-//year table - query 1
+
 CREATE VIEW YEAR_ENERGY_SOURCE_KBTU_COST AS
 SELECT EXTRACT(YEAR FROM StartDate), SUM(Cost), Usage_Amount, Usage_Amount/cast(SUM(Cost) as float) AS kbtuPerCost
 FROM DATE_INTERVAL NATURAL JOIN MAPS_TO NATURAL JOIN ENERGY_SOURCE_COST NATURAL JOIN ENERGY_SOURCE
 GROUP BY EXTRACT(YEAR FROM StartDate), Usage_Amount;
 
-//month table - query 1
 CREATE VIEW MONTH_ENERGY_SOURCE_KBTU_COST AS
 SELECT EXTRACT(MONTH FROM StartDate), SUM(Cost), Usage_Amount, Usage_Amount/cast(SUM(Cost) as float) AS kbtuPerCost
 FROM DATE_INTERVAL NATURAL JOIN MAPS_TO NATURAL JOIN ENERGY_SOURCE_COST NATURAL JOIN ENERGY_SOURCE
 GROUP BY EXTRACT(MONTH FROM StartDate), Usage_Amount;
 
-//15-minute table - query 1 (Virtual Table 2)
 CREATE VIEW MINUTE_ENERGY_SOURCE_KBTU_COST AS
 SELECT StartDate, StartTimestamp, cast(Cost as float)/(30 * 24 * 4) AS cost, cast(Usage_Amount as float)/ (30*24*4) AS Usage_Amt, Usage_Amount/(cast(Cost as float) / (30 * 24 * 4)) AS kbtuPerCost
 FROM DATE_INTERVAL NATURAL JOIN MAPS_TO NATURAL JOIN ENERGY_SOURCE_COST NATURAL JOIN ENERGY_SOURCE
 GROUP BY StartDate, StartTimestamp, Usage_Amount, Cost
 ORDER BY StartDate ASC;
 
-//Virtual Table 3 - Meter Costs (Year)
 CREATE VIEW YEAR_METER_COST AS
 SELECT EXTRACT(YEAR FROM StartDate), Meter_Type, Usage_Amount, Usage_Amount/cast(SUM(Cost) as float) AS kbtuPerCost
 FROM DATE_INTERVAL NATURAL JOIN MAPS_TO NATURAL JOIN ENERGY_SOURCE_COST NATURAL JOIN ENERGY_SOURCE
 GROUP BY EXTRACT(YEAR FROM StartDate), Meter_Type, Usage_Amount;
 
-//Virtual Table 3 - Meter Costs (Month)
 CREATE VIEW MONTH_METER_COST AS
 SELECT EXTRACT(MONTH FROM StartDate), Meter_Type, Usage_Amount, Usage_Amount/cast(SUM(Cost) as float) AS kbtuPerCost
 FROM DATE_INTERVAL NATURAL JOIN MAPS_TO NATURAL JOIN ENERGY_SOURCE_COST NATURAL JOIN ENERGY_SOURCE
 GROUP BY EXTRACT(MONTH FROM StartDate), Meter_Type, Usage_Amount;
 
-//Virtual Table 3 - Meter Costs (15-minute)
 CREATE VIEW MINUTE_METER_COST AS
 SELECT StartTimestamp, Meter_Type, cast(Usage_Amount as float)/ (30*24*4) AS Usage_Amt, Usage_Amount/(cast(SUM(Cost) as float) * 30 * 24 * 4) AS kbtuPerCost
 FROM DATE_INTERVAL NATURAL JOIN MAPS_TO NATURAL JOIN ENERGY_SOURCE_COST NATURAL JOIN ENERGY_SOURCE
 GROUP BY StartTimestamp, Meter_Type, Usage_Amount;
 
-//Virtual Table 4 - Month
 CREATE VIEW MONTH_USAGE AS
 SELECT StartDate, Meter_Type, Usage_Amount
 FROM DATE_INTERVAL NATURAL JOIN MAPS_TO NATURAL JOIN ENERGY_SOURCE_COST NATURAL JOIN ENERGY_SOURCE
 GROUP BY StartDate, Meter_Type, Usage_Amount;
 
-//Virtual Table 5 - Season
 CREATE VIEW SEASON_USAGE AS
 SELECT StartDate, TypeOfSeason, Usage_Amount
 FROM DATE_INTERVAL NATURAL JOIN MAPS_TO NATURAL JOIN ENERGY_SOURCE_COST NATURAL JOIN ENERGY_SOURCE
