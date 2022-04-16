@@ -41,36 +41,38 @@ sheetName_MT = 'Meter Entries' #Sheet for the MAPS_TO table
 specialCols_PB = "C, B" #Columns for the POWERED_BY table
 sheetName_PB = 'Meter Entries' #Sheet for the POWERED_BY table
 
-'''
-This is the code to handle the manipulation of Date Interval
-This does not work so we're coming back to this later.
-The format of the data works outside of the relations
-DATE_INTERVAL and MAPS_TO works perfectly fine.
+
+#This is the code to handle the manipulation of Date Interval
+#This does not work so we're coming back to this later.
+#The format of the data works outside of the relations
+#DATE_INTERVAL and MAPS_TO works perfectly fine.
+
 idf = pd.read_excel(file_loc, index_col=None, na_values=['NA'], sheet_name = sheetName_DI, usecols = 'G, H')
 
-dates = (pd.DataFrame(columns=['NULL'],
+dates = (pd.DataFrame(columns=['StartDate'],
                   index=pd.date_range(str(idf.iloc[0,0]) + 'T00:00:00', str(idf.iloc[0,1]) + 'T23:59:00',
                                       freq='15T'))
        .between_time('00:00','23:59')
-       .index.strftime('%Y-%m-%d')
-       .tolist())
-print(dates)
+       .index.strftime('%Y-%m-%d'))
+       
+#print(dates)
 
-intervals = (pd.DataFrame(columns=['NULL'],
+intervals = (pd.DataFrame(columns=['StartTimestamp'],
                   index=pd.date_range(str(idf.iloc[0,0]) + 'T00:00:00', str(idf.iloc[0,1]) + 'T23:59:00',
                                       freq='15T'))
        .between_time('00:00','23:59')
-       .index.strftime('%H:%M:%S')
-       .tolist())
-print(intervals)
+       .index.strftime('%H:%M:%S'))
+#print(intervals)
 
-idf['StartDate'] = pd.Series(dates, index = idf.index[:len(dates)])
-idf['StartTimestamp'] = pd.Series(intervals, index = idf.index[:len(intervals)])
+dates_df = pd.DataFrame (dates, columns = ['StartDate'])
+intervals_df = pd.DataFrame (intervals, columns = ['StartTimestamp'])
 
-idf.to_excel(newSheet, sheet_name= 'DATE_INTERVAL', na_rep='', float_format=None, columns=None, header=True, index=True, index_label=None, startrow=0, startcol=1, engine=None, merge_cells=True, encoding=None, inf_rep='inf', verbose=True, freeze_panes=None, storage_options=None)
+#print(timestamps)
+df_ids = pd.read_excel(file_loc, index_col=None, na_values=['NA'], sheet_name = sheetName_DI, usecols = 'F')
+df_timestamps = pd.concat([df_ids, dates_df, intervals_df], axis=1)
+df_timestamps.to_excel(newSheet, sheet_name= 'DATE_INTERVAL', na_rep='', float_format=None, columns=None, header=True, index=True, index_label=None, startrow=0, startcol=0, engine=None, merge_cells=True, encoding=None, inf_rep='inf', verbose=True, freeze_panes=None, storage_options=None)
 
-idf2 = pd.read_excel(file_loc, index_col=None, na_values=['NA'], sheet_name = sheetName_DI, usecols = 'F')
-idf2.to_excel(newSheet, sheet_name= 'DATE_INTERVAL', na_rep='', float_format=None, columns=None, header=True, index=True, index_label=None, startrow=0, startcol=0, engine=None, merge_cells=True, encoding=None, inf_rep='inf', verbose=True, freeze_panes=None, storage_options=None)
+#idf.to_excel(newSheet, sheet_name= 'DATE_INTERVAL', na_rep='', float_format=None, columns=None, header=True, index=True, index_label=None, startrow=0, startcol=1, engine=None, merge_cells=True, encoding=None, inf_rep='inf', verbose=True, freeze_panes=None, storage_options=None)
 
 # --------------------------
 
@@ -78,7 +80,7 @@ idf2.to_excel(newSheet, sheet_name= 'DATE_INTERVAL', na_rep='', float_format=Non
 df = pd.read_excel(file_loc, index_col=None, na_values=['NA'], sheet_name = sheetName_PB, usecols = specialCols_PB)
 #print(df)
 df.to_excel(newSheet, sheet_name= 'POWERED_BY', na_rep='', float_format=None, columns=None, header=True, index=True, index_label=None, startrow=0, startcol=0, engine=None, merge_cells=True, encoding=None, inf_rep='inf', verbose=True, freeze_panes=None, storage_options=None)
-'''
+
 
 # --------------------------
 
