@@ -1,7 +1,3 @@
-CREATEDB ESPA_DB
-
-PSQL ESPA_DB
-
 CREATE TABLE DATE_INTERVAL (Meter_Consumption_ID varchar(20) UNIQUE PRIMARY KEY, StartDate date, TypeOfSeason varchar(7) , StartTimestamp time);
 
 CREATE TABLE BUILDING (Portfolio_Manager_ID int UNIQUE, Name varchar(30) UNIQUE, Construction_Status varchar(50), Gross_Floor_Area int, PRIMARY KEY (Portfolio_Manager_ID, Name));
