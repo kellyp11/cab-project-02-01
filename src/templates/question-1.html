@@ -8,7 +8,7 @@
         <!-- JavaScript Bundle with Popper -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     </head>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary px-2">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary px-2 mb-3">
         <a class="navbar-brand" href="/">ESPA</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -29,15 +29,65 @@
         </div>
       </nav>
     <body>
-	    <h3>Question 1</h3>
+	    <h3 class="text-center mb-3">Question 1</h3>
 
-	    <h4>Example 1</h4>
+	    <h4 class="text-center mb-5">Example 1</h4>
         <form action="/venue-handler" method="POST">
+          <div class="row mb-3">
+          <div class="checkq1 col-4">
+          <h4>Select an energy source: </h5>
+          <div>
+            <input type="checkbox" name="Meter_Type" value = 'Electric-Grid'>
+            Electric-Grid
+          </div>
+          <div>
+            <input type="checkbox" name="Meter_Type" value = 'Natural Gas'>
+            Natural Gas
+          </div>
+          <div>
+            <input type="checkbox" name="Meter_Type" value = 'Fuel Oil'>
+            Fuel Oil
+          </div>
+          <div>
+            <input type="checkbox" name="Meter_Type" value = 'Other'>
+            Other
+          </div>
+        </div>
+        <div class="radioq1 col-4">
+          <h5>Select either: </h5>
+          <div>
+            <input type="radio" name="YEAR_ENERGY_SOURCE_KBTU_COST">
+            Year
+          </div>
+          <div>
+            <input type="radio" name="MONTH_ENERGY_SOURCE_KBTU_COST">
+            Month
+          </div>
+          <div>
+            <input type="radio" name="MINUTE_ENERGY_SOURCE_KBTU_COST">
+            15 Minute
+          </div>
+        </div>
+        <div class="fieldq1 col-4">
+          <div>
+            <h5> Please enter a starting year </h5>
+              <input type="text" name="portfolio_manager_id">
+            </div>
             <div>
-                Find all the events at this venue_id
+              <h5> Please entering an ending year </h5>
                 <input type="text" name="portfolio_manager_id">
             </div>
-                <input type="submit" value="Submit">
+        </div>
+      </div>
+      <div class="row">
+        <div>
+          <input type="checkbox" name="Meter_Cost" value = 'Meter Cost' class="m-auto">
+          Show Meter Cost?
+        </div>
+      </div>
+      <div class="row">
+        <input type="submit" value="Submit" class="m-auto w-25 btn btn-primary">
+      </div>  
         </form>
     </body>
 </html>
