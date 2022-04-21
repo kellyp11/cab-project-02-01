@@ -104,7 +104,7 @@ def question2():
 
 # handle venue POST and serve result web page
 @app.route('/venue-handler', methods=['POST'])
-def venue_handler():
+def venue_handler(): # request.form(variable name from question 1 or question 2)
     rows = connect('SELECT portfolio_manager_id, name FROM BUILDING WHERE portfolio_manager_id = ' + request.form['portfolio_manager_id'] + ';')
     heads = ['portfolio_manager_id', 'name']
     return render_template('my-result.html', rows=rows, heads=heads)
