@@ -105,9 +105,25 @@ def question2():
 # handle venue POST and serve result web page
 @app.route('/venue-handler', methods=['POST'])
 def venue_handler(): # request.form(variable name from question 1 or question 2)
-    rows = connect('SELECT portfolio_manager_id, name FROM BUILDING WHERE portfolio_manager_id = ' + request.form['portfolio_manager_id'] + ';')
-    heads = ['portfolio_manager_id', 'name']
-    return render_template('my-result.html', rows=rows, heads=heads)
+    #rows = connect('SELECT portfolio_manager_id, name FROM BUILDING WHERE portfolio_manager_id = ' + request.form['portfolio_manager_id'] + ';')
+    #rows = connect('SELECT * FROM YEAR_METER_COST WHERE meter_type IN ' + request.form.getlist('Meter_Type') + ';')
+    checkboxes = request.form.getlist('Meter_Type')
+    size = len(checkboxes)
+    index = 0
+    checkbox_string = "("
+    for checkbox in checkboxes:
+        index += 1
+        if index == size:
+            checkbox_string = checkbox_string + '\'' + checkbox + '\''
+        else:
+            checkbox_string = checkbox_string + '\'' + checkbox + '\'' + ',' 
+    checkbox_string += ")"
+    rows = connect('SELECT CAST(date_part AS varchar(4)), meter_type, usage_amount, kbtupercost FROM YEAR_METER_COST WHERE meter_type IN ' + checkbox_string + ' AND ' + 'date_part BETWEEN ' + request.form['yearSel_startyear'] + ' AND ' + request.form['yearSel_endyear'] + ';')
+    heads = ['Date', 'Meter Type', 'Usage Amount', 'Kbtu/Cost']
+
+    meter_rows = connect('SELECT CAST(date_part AS varchar(4)), sum, usage_amount, kbtupercost FROM YEAR_ENERGY_SOURCE_KBTU_COST WHERE date_part BETWEEN ' + request.form['yearSel_startyear'] + ' AND ' + request.form['yearSel_endyear'] + ';')
+    meters = ['Date', 'Total Cost', 'Usage Amount', 'Kbtu/Cost']
+    return render_template('my-result.html', rows=rows, heads=heads, meter_rows=meter_rows, meters=meters)
 
 # handle query POST and serve result web page
 @app.route('/query-handler', methods=['POST'])
