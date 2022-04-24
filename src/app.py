@@ -130,13 +130,13 @@ def venue_handler(): # request.form(variable name from question 1 or question 2)
 
         return render_template('my-result.html', rows=rows, heads=heads, meter_rows=meter_rows, meter_heads=meter_heads)
     elif (options == "MONTH_ENERGY_SOURCE_KBTU_COST"):
-        rows = connect('SELECT year, month, cost, usage_amount, kbtupercost, meter_type FROM YEAR_ENERGY_SOURCE_KBTU_COST WHERE CAST(year AS int) BETWEEN ' + request.form['yearSel_startyear'] + ' AND ' + request.form['yearSel_endyear'] + ';')
+        rows = connect('SELECT year, month, cost, usage_amount, kbtupercost, meter_type FROM MONTH_ENERGY_SOURCE_KBTU_COST WHERE CAST(year AS int) = ' + request.form['monthSel_year'] + ' AND CAST(month AS int) BETWEEN ' + request.form['monthSel_startmonth'] + ' AND ' + request.form['monthSel_endmonth'] + ';')
         heads = ['Year', 'Month', 'Total Cost', 'Usage Amount', 'Kbtu/Cost', 'Meter Type']
-        meter_rows = None
-        meter_heads = None
+        meter_rows = ""
+        meter_heads = ""
 
-        if (request.form['Meter_Cost'] == "Meter Cost"):
-            meter_rows = connect('SELECT month, meter_type, cost FROM YEAR_METER_COST WHERE meter_type IN ' + checkbox_string + ' AND ' + 'CAST(year AS int) BETWEEN ' + request.form['yearSel_startyear'] + ' AND ' + request.form['yearSel_endyear'] + ';')
+        if checkboxes and request.form.getlist('Meter_Cost'):
+            meter_rows = connect('SELECT month, meter_type, cost FROM MONTH_METER_COST WHERE meter_type IN ' + checkbox_string + ' AND ' + 'CAST(month AS int) BETWEEN ' + request.form['monthSel_startmonth'] + ' AND ' + request.form['monthSel_endmonth'] + ';')
             meter_heads = ['Month', 'Meter Type', 'Cost']
         return render_template('my-result.html', rows=rows, heads=heads, meter_rows=meter_rows, meter_heads=meter_heads)
     elif (options == "MINUTE_ENERGY_SOURCE_KBTU_COST"):
