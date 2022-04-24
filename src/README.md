@@ -32,7 +32,7 @@ flask run
 ```
 
 ## Screenshots
-![Home Page](images/home_page.png)  
+![Home Page](images/home-page.png)  
 ![Venue Result Page](images/venue_result.png)  
 ![Query Result Page](images/query_result.png)  
 
