@@ -3,8 +3,8 @@
 ## Overview
 
 This is an example Flask | Python | Psycopg2 | PostgreSQL
-application that connects to the ESPA_DB database from
-Chapter 2 of _Seven Databases in Seven Weeks Second Edition_
+application that connects to the ESPA_DB database. It follows a similar format
+to the 7dbs database from Chapter 2 of _Seven Databases in Seven Weeks Second Edition_
 by Luc Perkins with Eric Redmond and Jim R. Wilson.
 The CSC 315 VM is assumed.
 
