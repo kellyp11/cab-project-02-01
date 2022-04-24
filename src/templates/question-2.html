@@ -105,38 +105,32 @@
         <div class="dropdown col-6" id = "base">
         </div>
 
-        <div class="dropdown col-6" id = "monthSel" style = "display:none">
-          <p> Please select a specific month: </p>
-          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-
-            Month
-          </button>
-          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <a class="dropdown-item" href="#">January</a>
-            <a class="dropdown-item" href="#">February</a>
-            <a class="dropdown-item" href="#">March</a>
-            <a class="dropdown-item" href="#">April</a>
-            <a class="dropdown-item" href="#">May</a>
-            <a class="dropdown-item" href="#">June</a>
-            <a class="dropdown-item" href="#">July</a>
-            <a class="dropdown-item" href="#">August</a>
-            <a class="dropdown-item" href="#">September</a>
-            <a class="dropdown-item" href="#">October</a>
-            <a class="dropdown-item" href="#">November</a>
-            <a class="dropdown-item" href="#">December</a>
-          </div>
+        <div class="dropdown col-6" name = "MonthSelection" id = "monthSel" style = "display:none">
+          <p> Please select a month: </p>
+          <select class="form-select" aria-label="Default select example">
+            <option selected>Month</option>
+            <option value="01">January</option>
+            <option value="02">February</option>
+            <option value="03">March</option>
+            <option value="04">April</option>
+            <option value="05">May</option>
+            <option value="06">June</option>
+            <option value="07">July</option>
+            <option value="08">August</option>
+            <option value="09">September</option>
+            <option value="10">October</option>
+            <option value="11">November</option>
+            <option value="12">December</option>
+          </select>
         </div>
 
-        <div class="dropdown col-6" id = "seasonSel" style = "display:none">
-          <p> Please select a specific season: </p>
-          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Season
-          </button>
-          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <a class="dropdown-item" href="#">Heating</a>
-            <a class="dropdown-item" href="#">Cooling</a>
-
-          </div>
+        <div class="dropdown col-6" name = "SeasonSelection" id = "seasonSel" style = "display:none">
+          <p> Please select a season: </p>
+          <select class="form-select" aria-label="Default select example">
+            <option selected>Season</option>
+            <option value="Heating">Heating</option>
+            <option value="Cooling">Cooling</option>
+          </select>
         </div>
       </div>
     
