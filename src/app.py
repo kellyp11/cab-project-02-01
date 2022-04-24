@@ -105,8 +105,9 @@ def question2():
 # handle venue POST and serve result web page
 @app.route('/venue-handler', methods=['POST'])
 def venue_handler(): # request.form(variable name from question 1 or question 2)
-    #rows = connect('SELECT portfolio_manager_id, name FROM BUILDING WHERE portfolio_manager_id = ' + request.form['portfolio_manager_id'] + ';')
-    #rows = connect('SELECT * FROM YEAR_METER_COST WHERE meter_type IN ' + request.form.getlist('Meter_Type') + ';')
+    rows = connect('SELECT CAST(date_part AS varchar(4)), cost, usage_amount, kbtupercost, meter_type FROM YEAR_ENERGY_SOURCE_KBTU_COST WHERE CAST(date_part AS int) BETWEEN ' + request.form['yearSel_startyear'] + ' AND ' + request.form['yearSel_endyear'] + ';')
+    heads = ['Date', 'Total Cost', 'Usage Amount', 'Kbtu/Cost', 'Meter Type']
+
     checkboxes = request.form.getlist('Meter_Type')
     size = len(checkboxes)
     index = 0
@@ -118,12 +119,10 @@ def venue_handler(): # request.form(variable name from question 1 or question 2)
         else:
             checkbox_string = checkbox_string + '\'' + checkbox + '\'' + ',' 
     checkbox_string += ")"
-    rows = connect('SELECT CAST(date_part AS varchar(4)), meter_type, usage_amount, kbtupercost FROM YEAR_METER_COST WHERE meter_type IN ' + checkbox_string + ' AND ' + 'date_part BETWEEN ' + request.form['yearSel_startyear'] + ' AND ' + request.form['yearSel_endyear'] + ';')
-    heads = ['Date', 'Meter Type', 'Usage Amount', 'Kbtu/Cost']
+    meter_rows = connect('SELECT CAST(date_part AS varchar(4)), meter_type, cost FROM YEAR_METER_COST WHERE meter_type IN ' + checkbox_string + ' AND ' + 'CAST(date_part AS int) BETWEEN ' + request.form['yearSel_startyear'] + ' AND ' + request.form['yearSel_endyear'] + ';')
+    meter_heads = ['Date', 'Meter Type', 'Cost']
 
-    meter_rows = connect('SELECT CAST(date_part AS varchar(4)), sum, usage_amount, kbtupercost FROM YEAR_ENERGY_SOURCE_KBTU_COST WHERE date_part BETWEEN ' + request.form['yearSel_startyear'] + ' AND ' + request.form['yearSel_endyear'] + ';')
-    meters = ['Date', 'Total Cost', 'Usage Amount', 'Kbtu/Cost']
-    return render_template('my-result.html', rows=rows, heads=heads, meter_rows=meter_rows, meters=meters)
+    return render_template('my-result.html', rows=rows, heads=heads, meter_rows=meter_rows, meter_heads=meter_heads)
 
 # handle query POST and serve result web page
 @app.route('/query-handler', methods=['POST'])
