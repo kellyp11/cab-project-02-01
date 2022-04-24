@@ -1,4 +1,4 @@
-# flask7dbs
+# flask ESPA_DB
 
 ## Overview
 
@@ -33,8 +33,8 @@ flask run
 
 ## Screenshots
 ![Home Page](images/home-page.png)  
-![Venue Result Page](images/question-1.png)  
-![Query Result Page](images/question-2.png)  
+![Venue Result Page](images/question-1-page.png)  
+![Query Result Page](images/question-2-page.png)  
 
 ## References
 
