@@ -121,10 +121,10 @@ def venue_handler(): # request.form(variable name from question 1 or question 2)
     if (options == "YEAR_ENERGY_SOURCE_KBTU_COST"):
         rows = connect('SELECT year, cost, usage_amount, kbtupercost, meter_type FROM YEAR_ENERGY_SOURCE_KBTU_COST WHERE CAST(year AS int) BETWEEN ' + request.form['yearSel_startyear'] + ' AND ' + request.form['yearSel_endyear'] + ';')
         heads = ['Year', 'Total Cost', 'Usage Amount', 'Kbtu/Cost', 'Meter Type']
-        meter_rows = None
-        meter_heads = None
+        meter_rows = ""
+        meter_heads = ""
 
-        if (request.form['Meter_Cost'] == "Meter Cost"):
+        if checkboxes and request.form.getlist('Meter_Cost'):
             meter_rows = connect('SELECT year, meter_type, cost FROM YEAR_METER_COST WHERE meter_type IN ' + checkbox_string + ' AND ' + 'CAST(year AS int) BETWEEN ' + request.form['yearSel_startyear'] + ' AND ' + request.form['yearSel_endyear'] + ';')
             meter_heads = ['year', 'Meter Type', 'Cost']
 
