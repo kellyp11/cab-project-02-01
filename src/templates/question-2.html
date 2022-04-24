@@ -54,48 +54,49 @@
       </nav>
     <body>
 	    <h3 class="text-center mb-3">Question 2</h3>
-
 	    <h4 class="text-center mb-5">Example 1</h4>
-        <form action="/venue-handler" method="POST">
-          <div class="row mb-3 ps-3">
+
+      <form action="/venue-handler" method="POST">
+        <div class="row mb-3 ps-3">
           <div class="checkq2 col-6">
-          <h4>Select an energy source: </h5>
-          <div>
-            <input type="checkbox" name="Meter_Type" value = 'Electric-Grid'>
-            Electric-Grid
+            <h4>Select an energy source: </h5>
+            <div>
+              <input type="checkbox" name="Meter_Type" value = 'Electric-Grid'>
+              Electric-Grid
+            </div>
+            <div>
+              <input type="checkbox" name="Meter_Type" value = 'Natural Gas'>
+              Natural Gas
+            </div>
+            <div>
+              <input type="checkbox" name="Meter_Type" value = 'Fuel Oil'>
+              Fuel Oil
+            </div>
+            <div>
+              <input type="checkbox" name="Meter_Type" value = 'Other'>
+              Other
+            </div>
           </div>
-          <div>
-            <input type="checkbox" name="Meter_Type" value = 'Natural Gas'>
-            Natural Gas
-          </div>
-          <div>
-            <input type="checkbox" name="Meter_Type" value = 'Fuel Oil'>
-            Fuel Oil
-          </div>
-          <div>
-            <input type="checkbox" name="Meter_Type" value = 'Other'>
-            Other
-          </div>
-        </div>
-        <div class="fieldq2 col-6">
-          <div>
-            <h5> Please enter a starting year </h5>
+
+          <div class="fieldq2 col-6">
+            <div>
+              <h5> Please enter a starting year </h5>
               <input type="text" name="portfolio_manager_id">
             </div>
             <div>
               <h5> Please entering an ending year </h5>
-                <input type="text" name="portfolio_manager_id">
+              <input type="text" name="portfolio_manager_id">
             </div>
-        </div>
-      </div>
-      <div class="row ps-3 mb-3">
-        <div class="radioq2 col-6">
-          <h5>Select either: </h5>
-          <div>
-
-            <input type="radio" name = "TimeP" id = "monthOption" onclick = "appearTxt()" value= "YEAR_ENERGY_SOURCE_KBTU_COST">
-            Month
           </div>
+        </div>
+
+        <div class="row ps-3 mb-3">
+          <div class="radioq2 col-6">
+            <h5>Select either: </h5>
+            <div>
+              <input type="radio" name = "TimeP" id = "monthOption" onclick = "appearTxt()" value= "YEAR_ENERGY_SOURCE_KBTU_COST">
+              Month
+            </div>
           <div>
             <input type="radio" name = "TimeP" id = "seasonOption" onclick = "appearTxt()" value="MONTH_ENERGY_SOURCE_KBTU_COST">
             Season
@@ -108,8 +109,7 @@
         <div class="dropdown col-6" id = "monthSel" style = "display:none">
           <p> Please select a specific month: </p>
           <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-
-            Month
+          Month
           </button>
           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
             <a class="dropdown-item" href="#">January</a>
@@ -135,16 +135,16 @@
           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
             <a class="dropdown-item" href="#">Heating</a>
             <a class="dropdown-item" href="#">Cooling</a>
-
           </div>
         </div>
-      </div>
-    
-      <div class="row">
-        <input type="submit" value="Submit" class="m-auto w-25 btn btn-primary">
-      </div>  
-        </form>
+
+        <div class="row">
+          <input type="submit" value="Submit" class="m-auto w-25 btn btn-primary">
+        </div>
+
+      </form>
     </body>
+    
     <footer class="text-center">
       <hr>
       <a>© ESPA 2022</a>
