@@ -105,9 +105,7 @@ def question2():
 # handle venue POST and serve result web page
 @app.route('/venue-handler', methods=['POST'])
 def venue_handler(): # request.form(variable name from question 1 or question 2)
-    rows = connect('SELECT CAST(date_part AS varchar(4)), cost, usage_amount, kbtupercost, meter_type FROM YEAR_ENERGY_SOURCE_KBTU_COST WHERE CAST(date_part AS int) BETWEEN ' + request.form['yearSel_startyear'] + ' AND ' + request.form['yearSel_endyear'] + ';')
-    heads = ['Date', 'Total Cost', 'Usage Amount', 'Kbtu/Cost', 'Meter Type']
-
+    options = request.form['ENERGY_SOURCE_KBTU_COST']
     checkboxes = request.form.getlist('Meter_Type')
     size = len(checkboxes)
     index = 0
@@ -119,10 +117,33 @@ def venue_handler(): # request.form(variable name from question 1 or question 2)
         else:
             checkbox_string = checkbox_string + '\'' + checkbox + '\'' + ',' 
     checkbox_string += ")"
-    meter_rows = connect('SELECT CAST(date_part AS varchar(4)), meter_type, cost FROM YEAR_METER_COST WHERE meter_type IN ' + checkbox_string + ' AND ' + 'CAST(date_part AS int) BETWEEN ' + request.form['yearSel_startyear'] + ' AND ' + request.form['yearSel_endyear'] + ';')
-    meter_heads = ['Date', 'Meter Type', 'Cost']
 
-    return render_template('my-result.html', rows=rows, heads=heads, meter_rows=meter_rows, meter_heads=meter_heads)
+    if (options == "YEAR_ENERGY_SOURCE_KBTU_COST"):
+        rows = connect('SELECT year, cost, usage_amount, kbtupercost, meter_type FROM YEAR_ENERGY_SOURCE_KBTU_COST WHERE CAST(year AS int) BETWEEN ' + request.form['yearSel_startyear'] + ' AND ' + request.form['yearSel_endyear'] + ';')
+        heads = ['Year', 'Total Cost', 'Usage Amount', 'Kbtu/Cost', 'Meter Type']
+        meter_rows = None
+        meter_heads = None
+
+        if (request.form['Meter_Cost'] == "Meter Cost"):
+            meter_rows = connect('SELECT year, meter_type, cost FROM YEAR_METER_COST WHERE meter_type IN ' + checkbox_string + ' AND ' + 'CAST(year AS int) BETWEEN ' + request.form['yearSel_startyear'] + ' AND ' + request.form['yearSel_endyear'] + ';')
+            meter_heads = ['year', 'Meter Type', 'Cost']
+
+        return render_template('my-result.html', rows=rows, heads=heads, meter_rows=meter_rows, meter_heads=meter_heads)
+    elif (options == "MONTH_ENERGY_SOURCE_KBTU_COST"):
+        rows = connect('SELECT year, month, cost, usage_amount, kbtupercost, meter_type FROM YEAR_ENERGY_SOURCE_KBTU_COST WHERE CAST(year AS int) BETWEEN ' + request.form['yearSel_startyear'] + ' AND ' + request.form['yearSel_endyear'] + ';')
+        heads = ['Year', 'Month', 'Total Cost', 'Usage Amount', 'Kbtu/Cost', 'Meter Type']
+        meter_rows = None
+        meter_heads = None
+
+        if (request.form['Meter_Cost'] == "Meter Cost"):
+            meter_rows = connect('SELECT month, meter_type, cost FROM YEAR_METER_COST WHERE meter_type IN ' + checkbox_string + ' AND ' + 'CAST(year AS int) BETWEEN ' + request.form['yearSel_startyear'] + ' AND ' + request.form['yearSel_endyear'] + ';')
+            meter_heads = ['Month', 'Meter Type', 'Cost']
+        return render_template('my-result.html', rows=rows, heads=heads, meter_rows=meter_rows, meter_heads=meter_heads)
+    elif (options == "MINUTE_ENERGY_SOURCE_KBTU_COST"):
+        return render_template('my-result.html', rows=rows, heads=heads, meter_rows=meter_rows, meter_heads=meter_heads)
+    else:
+        return render_template('my-result.html')
+
 
 # handle query POST and serve result web page
 @app.route('/query-handler', methods=['POST'])
