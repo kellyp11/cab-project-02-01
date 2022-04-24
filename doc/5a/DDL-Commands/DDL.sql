@@ -53,11 +53,11 @@ GROUP BY StartDate, StartTimestamp, Meter_Type, Cost
 ORDER BY StartDate ASC;
 
 CREATE VIEW MONTH_USAGE AS
-SELECT StartDate, Meter_Type, cast(Usage_Amount as float)/(30 * 24 * 4)
+SELECT StartDate, Meter_Type, cast(Usage_Amount as float)/(30 * 24 * 4) AS Usage_Amount
 FROM DATE_INTERVAL NATURAL JOIN MAPS_TO NATURAL JOIN ENERGY_SOURCE_COST NATURAL JOIN ENERGY_SOURCE
 GROUP BY StartDate, Meter_Type, Usage_Amount, Meter_Type;
 
 CREATE VIEW SEASON_USAGE AS
-SELECT StartDate, TypeOfSeason, cast(Usage_Amount as float)/(30 * 24 * 4), Meter_Type
+SELECT StartDate, TypeOfSeason, cast(Usage_Amount as float)/(30 * 24 * 4) AS Usage_Amount, Meter_Type
 FROM DATE_INTERVAL NATURAL JOIN MAPS_TO NATURAL JOIN ENERGY_SOURCE_COST NATURAL JOIN ENERGY_SOURCE
 GROUP BY StartDate, TypeOfSeason, Usage_Amount, Meter_Type;
