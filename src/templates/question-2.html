@@ -56,7 +56,7 @@
 	    <h3 class="text-center mb-3">Question 2</h3>
 
 	    <h4 class="text-center mb-5">Example 1</h4>
-        <form action="/venue-handler" method="POST">
+        <form action="/questiontwo_handler" method="POST">
           <div class="row mb-3 ps-3">
           <div class="checkq2 col-6">
           <h4>Select an energy source: </h5>
@@ -93,11 +93,11 @@
           <h5>Select either: </h5>
           <div>
 
-            <input type="radio" name = "TimeP" id = "monthOption" onclick = "appearTxt()" value= "YEAR_ENERGY_SOURCE_KBTU_COST">
+            <input type="radio" name = "TimeP" id = "monthOption" onclick = "appearTxt()" value= "monthOption">
             Month
           </div>
           <div>
-            <input type="radio" name = "TimeP" id = "seasonOption" onclick = "appearTxt()" value="MONTH_ENERGY_SOURCE_KBTU_COST">
+            <input type="radio" name = "TimeP" id = "seasonOption" onclick = "appearTxt()" value="seasonOption">
             Season
           </div>
         </div>
@@ -107,7 +107,7 @@
 
         <div class="dropdown col-6" name = "MonthSelection" id = "monthSel" style = "display:none">
           <p> Please select a month: </p>
-          <select class="form-select" aria-label="Default select example">
+          <select name="q2monthSel" class="btn btn-secondary" aria-label="Default select example">
             <option selected>Month</option>
             <option value="01">January</option>
             <option value="02">February</option>
@@ -126,7 +126,7 @@
 
         <div class="dropdown col-6" name = "SeasonSelection" id = "seasonSel" style = "display:none">
           <p> Please select a season: </p>
-          <select class="form-select" aria-label="Default select example">
+          <select name="q2seasonSel" class="btn btn-secondary" aria-label="Default select example">
             <option selected>Season</option>
             <option value="Heating">Heating</option>
             <option value="Cooling">Cooling</option>

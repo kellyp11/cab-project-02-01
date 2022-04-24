@@ -103,8 +103,8 @@ def question2():
     return render_template('question-2.html')
 
 # handle venue POST and serve result web page
-@app.route('/venue-handler', methods=['POST'])
-def venue_handler(): # request.form(variable name from question 1 or question 2)
+@app.route('/questionone_handler', methods=['POST'])
+def questioneone_handler(): # request.form(variable name from question 1 or question 2)
     options = request.form['ENERGY_SOURCE_KBTU_COST']
     checkboxes = request.form.getlist('Meter_Type')
     size = len(checkboxes)
@@ -156,10 +156,31 @@ def venue_handler(): # request.form(variable name from question 1 or question 2)
 
 
 # handle query POST and serve result web page
-@app.route('/query-handler', methods=['POST'])
-def query_handler():
-    rows = connect(request.form['query'])
-    return render_template('my-result.html', rows=rows)
+@app.route('/questiontwo_handler', methods=['POST'])
+def questiontwo_handler():
+    options = request.form['TimeP']
+    checkboxes = request.form.getlist('Meter_Type')
+    size = len(checkboxes)
+    index = 0
+    checkbox_string = "("
+    for checkbox in checkboxes:
+        index += 1
+        if index == size:
+            checkbox_string = checkbox_string + '\'' + checkbox + '\''
+        else:
+            checkbox_string = checkbox_string + '\'' + checkbox + '\'' + ',' 
+    checkbox_string += ")"
+
+    if (options == "monthOption"):
+        rows = connect('SELECT StartDate, Meter_Type, Usage_Amount FROM MONTH_USAGE WHERE meter_type IN ' + checkbox_string + ' AND EXTRACT(YEAR FROM StartDate) BETWEEN ' + request.form['start_year'] + ' AND ' + request.form['end_year'] + ' AND EXTRACT(MONTH FROM StartDate) = ' + request.form['q2monthSel'] + ';')
+        heads = ['Date', 'Meter Type', 'Usage Amount']
+        return render_template('my-result.html', rows=rows, heads=heads)
+    elif (options == "seasonOption"):
+        rows = connect('SELECT StartDate, Meter_Type, Usage_Amount, TypeOfSeason FROM SEASON_USAGE WHERE meter_type IN ' + checkbox_string + ' AND EXTRACT(YEAR FROM StartDate) BETWEEN ' + request.form['start_year'] + ' AND ' + request.form['end_year'] + ' AND TypeOfSeason = ' + '\'' + request.form['q2seasonSel'] + '\'' + ';')
+        heads = ['Date', 'Meter Type', 'Usage Amount', 'Season']
+        return render_template('my-result.html', rows=rows, heads=heads)
+    else:
+       return render_template('my-result.html') 
 
 if __name__ == '__main__':
     app.run(debug = True)
