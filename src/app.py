@@ -136,10 +136,20 @@ def venue_handler(): # request.form(variable name from question 1 or question 2)
         meter_heads = ""
 
         if checkboxes and request.form.getlist('Meter_Cost'):
-            meter_rows = connect('SELECT month, meter_type, cost FROM MONTH_METER_COST WHERE meter_type IN ' + checkbox_string + ' AND ' + 'CAST(month AS int) BETWEEN ' + request.form['monthSel_startmonth'] + ' AND ' + request.form['monthSel_endmonth'] + ';')
-            meter_heads = ['Month', 'Meter Type', 'Cost']
+            meter_rows = connect('SELECT year, month, meter_type, cost FROM MONTH_METER_COST WHERE meter_type IN ' + checkbox_string + ' AND ' + 'CAST(month AS int) BETWEEN ' + request.form['monthSel_startmonth'] + ' AND ' + request.form['monthSel_endmonth'] + ' AND CAST(year as int) = ' + request.form['monthSel_year'] + ';')
+            meter_heads = ['Year', 'Month', 'Meter Type', 'Cost']
         return render_template('my-result.html', rows=rows, heads=heads, meter_rows=meter_rows, meter_heads=meter_heads)
     elif (options == "MINUTE_ENERGY_SOURCE_KBTU_COST"):
+        rows = connect('SELECT StartDate, StartTimestamp, cost, usage_amt, kbtupercost, meter_type FROM MINUTE_ENERGY_SOURCE_KBTU_COST WHERE StartDate = ' + '\'' + request.form['minSel_date'] + '\'' + ' AND starttimestamp BETWEEN ' + '\'' + request.form['minSel_starttime'] + '\'' + ' AND ' + '\'' + request.form['minSel_endtime'] + '\'' + ';')
+        heads = ['Date', 'Time', 'Total Cost', 'Usage Amount', 'Kbtu/Cost', 'Meter Type']
+        meter_rows = ""
+        meter_heads = ""
+
+        if checkboxes and request.form.getlist('Meter_Cost'):
+            start_time = request.form['minSel_starttime'][:-2]
+            end_time = request.form['minSel_endtime'][:-2]
+            meter_rows = connect('SELECT StartDate, starttimestamp, meter_type, cost FROM MINUTE_METER_COST WHERE meter_type IN ' + checkbox_string + ' AND starttimestamp BETWEEN ' + '\'' + start_time + '\'' + ' AND ' + '\'' + end_time + '\'' + ' AND StartDate = ' + '\'' + request.form['minSel_date'] + '\'' + ';')
+            meter_heads = ['Date', 'Time', 'Meter Type', 'Cost']
         return render_template('my-result.html', rows=rows, heads=heads, meter_rows=meter_rows, meter_heads=meter_heads)
     else:
         return render_template('my-result.html')
