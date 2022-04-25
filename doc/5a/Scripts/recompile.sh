@@ -1,7 +1,11 @@
 # This file was made by the ESPA team
 
 #this line drops the tables
+<<<<<<< Updated upstream
 psql -d ESPA_DB -f /home/lion/Desktop/cab-project-02-1-main/doc/5a/Scripts/espa_drop.sql
+=======
+psql -d ESPA_DB -f espa_drop.sql
+>>>>>>> Stashed changes
 
 #this line recreates the new tables
 psql -d ESPA_DB -f ../DDL-Commands/DDL.sql
