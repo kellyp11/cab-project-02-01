@@ -119,8 +119,8 @@ def questioneone_handler(): # request.form(variable name from question 1 or ques
     checkbox_string += ")"
 
     if (options == "YEAR_ENERGY_SOURCE_KBTU_COST"):
-        rows = connect('SELECT year, cost, usage_amount, kbtupercost, meter_type FROM YEAR_ENERGY_SOURCE_KBTU_COST WHERE CAST(year AS int) BETWEEN ' + request.form['yearSel_startyear'] + ' AND ' + request.form['yearSel_endyear'] + ';')
-        heads = ['Year', 'Total Cost', 'Usage Amount', 'Kbtu/Cost', 'Meter Type']
+        rows = connect('SELECT year, cost, usage_amount, kbtupercost FROM YEAR_SOURCE WHERE CAST(year AS int) BETWEEN ' + request.form['yearSel_startyear'] + ' AND ' + request.form['yearSel_endyear'] + ';')
+        heads = ['Year', 'Total Cost', 'Usage Amount', 'Kbtu/Cost']
         meter_rows = ""
         meter_heads = ""
 
@@ -130,8 +130,8 @@ def questioneone_handler(): # request.form(variable name from question 1 or ques
 
         return render_template('my-result.html', rows=rows, heads=heads, meter_rows=meter_rows, meter_heads=meter_heads)
     elif (options == "MONTH_ENERGY_SOURCE_KBTU_COST"):
-        rows = connect('SELECT year, month, cost, usage_amount, kbtupercost, meter_type FROM MONTH_ENERGY_SOURCE_KBTU_COST WHERE CAST(year AS int) = ' + request.form['monthSel_year'] + ' AND CAST(month AS int) BETWEEN ' + request.form['monthSel_startmonth'] + ' AND ' + request.form['monthSel_endmonth'] + ';')
-        heads = ['Year', 'Month', 'Total Cost', 'Usage Amount', 'Kbtu/Cost', 'Meter Type']
+        rows = connect('SELECT year, month, cost, usage_amount, kbtupercost FROM MONTH_SOURCE WHERE CAST(year AS int) = ' + request.form['monthSel_year'] + ' AND CAST(month AS int) BETWEEN ' + request.form['monthSel_startmonth'] + ' AND ' + request.form['monthSel_endmonth'] + ';')
+        heads = ['Year', 'Month', 'Total Cost', 'Usage Amount', 'Kbtu/Cost']
         meter_rows = ""
         meter_heads = ""
 
@@ -140,8 +140,8 @@ def questioneone_handler(): # request.form(variable name from question 1 or ques
             meter_heads = ['Year', 'Month', 'Meter Type', 'Cost']
         return render_template('my-result.html', rows=rows, heads=heads, meter_rows=meter_rows, meter_heads=meter_heads)
     elif (options == "MINUTE_ENERGY_SOURCE_KBTU_COST"):
-        rows = connect('SELECT StartDate, StartTimestamp, cost, usage_amt, kbtupercost, meter_type FROM MINUTE_ENERGY_SOURCE_KBTU_COST WHERE StartDate = ' + '\'' + request.form['minSel_date'] + '\'' + ' AND starttimestamp BETWEEN ' + '\'' + request.form['minSel_starttime'] + '\'' + ' AND ' + '\'' + request.form['minSel_endtime'] + '\'' + ';')
-        heads = ['Date', 'Time', 'Total Cost', 'Usage Amount', 'Kbtu/Cost', 'Meter Type']
+        rows = connect('SELECT StartDate, StartTimestamp, cost, usage_amt, kbtupercost FROM MINUTE_SOURCE WHERE StartDate = ' + '\'' + request.form['minSel_date'] + '\'' + ' AND starttimestamp BETWEEN ' + '\'' + request.form['minSel_starttime'] + '\'' + ' AND ' + '\'' + request.form['minSel_endtime'] + '\'' + ';')
+        heads = ['Date', 'Time', 'Total Cost', 'Usage Amount', 'Kbtu/Cost']
         meter_rows = ""
         meter_heads = ""
 
