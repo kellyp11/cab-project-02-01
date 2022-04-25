@@ -1,5 +1,4 @@
 # This file was made by the ESPA team
-psql ESPA_DB
 
 #this line drops the tables
 psql -d ESPA_DB -f /home/lion/Desktop/cab-project-02-1-main/doc/5a/Scripts/espa_drop.sql
