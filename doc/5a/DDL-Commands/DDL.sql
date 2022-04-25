@@ -28,7 +28,7 @@ GROUP BY EXTRACT(YEAR FROM StartDate), Cost, Usage_Amount, Meter_Type;
 CREATE VIEW YEAR_SOURCE AS
 SELECT Year, SUM(Cost) AS Cost, SUM(Usage_Amount) AS Usage_Amount,(SUM(Usage_Amount)/cast(SUM(Cost) as float)) AS kbtuPerCost
 FROM YEAR_ENERGY_SOURCE_KBTU_COST
-GROUP BY Year, Cost;
+GROUP BY Year;
 
 CREATE VIEW MONTH_ENERGY_SOURCE_KBTU_COST AS
 SELECT cast(EXTRACT(YEAR FROM StartDate) as varchar(4)) AS Year, cast(EXTRACT(MONTH FROM StartDate) as varchar(2)) AS Month, Cost, Usage_Amount, Usage_Amount/cast(SUM(Cost) as float) AS kbtuPerCost, Meter_Type
