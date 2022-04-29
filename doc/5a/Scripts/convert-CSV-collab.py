@@ -36,10 +36,10 @@ specialCols_OS = "C, F, E" #Columns for the OTHER_SOURCE table
 sheetName_OS = M_CONSTANT #Sheet for the OTHER_SOURCE table
 
 specialCols_MT = "F, C" #Columns for the MAPS_TO table
-sheetName_MT = 'Meter Entries' #Sheet for the MAPS_TO table
+sheetName_MT = ME_CONSTANT #Sheet for the MAPS_TO table
 
 specialCols_PB = "C, B" #Columns for the POWERED_BY table
-sheetName_PB = 'Meter Entries' #Sheet for the POWERED_BY table
+sheetName_PB = M_CONSTANT #Sheet for the POWERED_BY table
 
 
 #This is the code to handle the manipulation of Date Interval
