@@ -18,7 +18,7 @@ specialCols_BT = "A, K"  #Columns for the BUILDING_TYPE table
 sheetName_BT = 'Properties' #Sheet for the BUILDING_TYPE table
 
 specialCols_ES = "C, D, E" #Columns for the ENERGY_SOURCE table
-sheetName_ES = ME_CONSTANT #Sheet for the ENERGY_SOURCE table
+sheetName_ES = M_CONSTANT #Sheet for the ENERGY_SOURCE table
 
 specialCols_ESC = "C, L, J" #Columns for the ENERGY_SOURCE_COST table
 sheetName_ESC = ME_CONSTANT #Sheet for the ENERGY_SOURCE_COST table
@@ -46,7 +46,7 @@ sheetName_PB = 'Meter Entries' #Sheet for the POWERED_BY table
 #This does not work so we're coming back to this later.
 #The format of the data works outside of the relations
 #DATE_INTERVAL and MAPS_TO works perfectly fine.
-
+'''
 idf = pd.read_excel(file_loc, index_col=None, na_values=['NA'], sheet_name = sheetName_DI, usecols = 'G, H')
 
 dates = (pd.DataFrame(columns=['StartDate'],
@@ -75,7 +75,7 @@ df_timestamps.to_excel(newSheet, sheet_name= 'DATE_INTERVAL', na_rep='', float_f
 #idf.to_excel(newSheet, sheet_name= 'DATE_INTERVAL', na_rep='', float_format=None, columns=None, header=True, index=True, index_label=None, startrow=0, startcol=1, engine=None, merge_cells=True, encoding=None, inf_rep='inf', verbose=True, freeze_panes=None, storage_options=None)
 
 # --------------------------
-
+'''
 #Modifying the sheet for POWERED_BY table
 df = pd.read_excel(file_loc, index_col=None, na_values=['NA'], sheet_name = sheetName_PB, usecols = specialCols_PB)
 #print(df)
