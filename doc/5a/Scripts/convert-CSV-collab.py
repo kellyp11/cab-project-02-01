@@ -74,17 +74,21 @@ intervals = (pd.DataFrame(columns=['StartTimestamp'],
 #print(intervals)
 
 #MeterConsumptionID:
-id_key = pd.DataFrame(columns)
+meterConsumpID = pd.DataFrame(columns = ['Meter Consumption ID'])
+
+for x in range(2880):
+    idf.loc[meterConsumpID,'Meter Consumption ID'] = (meterConsumpID + '-' + x).zfill(len(4))
 
 dates_df = pd.DataFrame (dates, columns = ['start'])
 intervals_df = pd.DataFrame (intervals, columns = ['StartTimestamp'])
+id_key = pd.DataFrame(meterConsumpID, columns = ['Meter Consumption ID'])
 
 #print(timestamps)
-df_timestamps = pd.concat([dates_df, intervals_df], axis=1)
-#df_timestamps.to_excel(newSheet, sheet_name= 'DATE_INTERVAL', na_rep='', float_format=None, columns=None, header=True, index=False, index_label=None, startrow=0, startcol=0, engine=None, merge_cells=True, encoding=None, inf_rep='inf', verbose=True, freeze_panes=None, storage_options=None)
+df_timestamps = pd.concat([dates_df, intervals_df, id_key], axis=1)
 
 df_timestamps.to_csv('DI.csv', index = None, header = True)
 
+#df_timestamps.to_excel(newSheet, sheet_name= 'DATE_INTERVAL', na_rep='', float_format=None, columns=None, header=True, index=False, index_label=None, startrow=0, startcol=0, engine=None, merge_cells=True, encoding=None, inf_rep='inf', verbose=True, freeze_panes=None, storage_options=None)
 #idf.to_excel(newSheet, sheet_name= 'DATE_INTERVAL', na_rep='', float_format=None, columns=None, header=True, index=False, index_label=None, startrow=0, startcol=1, engine=None, merge_cells=True, encoding=None, inf_rep='inf', verbose=True, freeze_panes=None, storage_options=None)
 
 # --------------------------
