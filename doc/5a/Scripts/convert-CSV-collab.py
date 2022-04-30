@@ -76,8 +76,9 @@ intervals = (pd.DataFrame(columns=['StartTimestamp'],
 #MeterConsumptionID:
 meterConsumpID = pd.DataFrame(columns = ['Meter Consumption ID'])
 
-for x in range(2880):
-    idf.loc[meterConsumpID,'Meter Consumption ID'] = (meterConsumpID + '-' + x).zfill(len(4))
+# INCOMPLETE
+#for x in range(2880):
+#    idf.loc[meterConsumpID,'Meter Consumption ID'] = (meterConsumpID + '-' + x).zfill(len(4))
 
 dates_df = pd.DataFrame (dates, columns = ['start'])
 intervals_df = pd.DataFrame (intervals, columns = ['StartTimestamp'])
