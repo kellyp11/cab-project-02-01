@@ -79,54 +79,63 @@ df_timestamps.to_excel(newSheet, sheet_name= 'DATE_INTERVAL', na_rep='', float_f
 #Modifying the sheet for POWERED_BY table
 df = pd.read_excel(file_loc, index_col=None, na_values=['NA'], sheet_name = sheetName_PB, usecols = specialCols_PB)
 #print(df)
-df.to_excel(newSheet, sheet_name= 'POWERED_BY', na_rep='', float_format=None, columns=None, header=True, index=True, index_label=None, startrow=0, startcol=0, engine=None, merge_cells=True, encoding=None, inf_rep='inf', verbose=True, freeze_panes=None, storage_options=None)
+df.to_excel(newSheet, sheet_name= 'POWERED_BY', na_rep='', float_format=None, columns=None, header=True, index=False, index_label=None, startrow=0, startcol=0, engine=None, merge_cells=True, encoding=None, inf_rep='inf', verbose=True, freeze_panes=None, storage_options=None)
 
 
 # --------------------------
 
 #Modifying the sheet for BUILDING table
 df = pd.read_excel(file_loc, index_col=None, na_values=['NA'], sheet_name = sheetName_B, usecols = specialCols_B)
+df.drop(df.columns[0], axis=1)
 #print(df)
-df.to_excel(newSheet, sheet_name= 'BUILDING', na_rep='', float_format=None, columns=None, header=True, index=True, index_label=None, startrow=0, startcol=0, engine=None, merge_cells=True, encoding=None, inf_rep='inf', verbose=True, freeze_panes=None, storage_options=None)
+df.to_excel(newSheet, sheet_name= 'BUILDING', na_rep='', float_format=None, columns=None, header=True, index=False, index_label=None, startrow=0, startcol=0, engine=None, merge_cells=True, encoding=None, inf_rep='inf', verbose=True, freeze_panes=None, storage_options=None)
 
 #Modifying the sheet for BUILDING_TYPE table
 df = pd.read_excel(file_loc, index_col=None, na_values=['NA'], sheet_name = sheetName_BT, usecols = specialCols_BT)
+df.drop(df.columns[0], axis=1)
 #print(df)
-df.to_excel(newSheet, sheet_name= 'BUILDING_TYPE', na_rep='', float_format=None, columns=None, header=True, index=True, index_label=None, startrow=0, startcol=0, engine=None, merge_cells=True, encoding=None, inf_rep='inf', verbose=True, freeze_panes=None, storage_options=None)
+df.to_excel(newSheet, sheet_name= 'BUILDING_TYPE', na_rep='', float_format=None, columns=None, header=True, index=False, index_label=None, startrow=0, startcol=0, engine=None, merge_cells=True, encoding=None, inf_rep='inf', verbose=True, freeze_panes=None, storage_options=None)
 
 #Modifying the sheet for ENERGY_SOURCE
 df = pd.read_excel(file_loc, index_col=None, na_values=['NA'], sheet_name = sheetName_ES, usecols = specialCols_ES)
+df.drop(df.columns[0], axis=1)
 #print(df)
-df.to_excel(newSheet, sheet_name= 'ENERGY_SOURCE', na_rep='', float_format=None, columns=None, header=True, index=True, index_label=None, startrow=0, startcol=0, engine=None, merge_cells=True, encoding=None, inf_rep='inf', verbose=True, freeze_panes=None, storage_options=None)
+df.to_excel(newSheet, sheet_name= 'ENERGY_SOURCE', na_rep='', float_format=None, columns=None, header=True, index=False, index_label=None, startrow=0, startcol=0, engine=None, merge_cells=True, encoding=None, inf_rep='inf', verbose=True, freeze_panes=None, storage_options=None)
 
 #Modifying the sheet for ENERGY_SOURCE_COST table
 df = pd.read_excel(file_loc, index_col=None, na_values=['NA'], sheet_name = sheetName_ESC, usecols = specialCols_ESC)
+df.drop(df.columns[0], axis=1)
 #print(df)
-df.to_excel(newSheet, sheet_name= 'ENERGY_SOURCE_COST', na_rep='', float_format=None, columns=None, header=True, index=True, index_label=None, startrow=0, startcol=0, engine=None, merge_cells=True, encoding=None, inf_rep='inf', verbose=True, freeze_panes=None, storage_options=None)
+df.to_excel(newSheet, sheet_name= 'ENERGY_SOURCE_COST', na_rep='', float_format=None, columns=None, header=True, index=False, index_label=None, startrow=0, startcol=0, engine=None, merge_cells=True, encoding=None, inf_rep='inf', verbose=True, freeze_panes=None, storage_options=None)
 
 #Modifying the sheet for FUEL_OIL table
 df = pd.read_excel(file_loc, index_col=None, na_values=['NA'], sheet_name = sheetName_FO, usecols = specialCols_FO)
+df.drop(df.columns[0], axis=1)
 #print(df)
-df.to_excel(newSheet, sheet_name= 'FUEL_OIL', na_rep='', float_format=None, columns=None, header=True, index=True, index_label=None, startrow=0, startcol=0, engine=None, merge_cells=True, encoding=None, inf_rep='inf', verbose=True, freeze_panes=None, storage_options=None)
+df.to_excel(newSheet, sheet_name= 'FUEL_OIL', na_rep='', float_format=None, columns=None, header=True, index=False, index_label=None, startrow=0, startcol=0, engine=None, merge_cells=True, encoding=None, inf_rep='inf', verbose=True, freeze_panes=None, storage_options=None)
 
 #Modifying the sheet for NATURAL_GAS table
 df = pd.read_excel(file_loc, index_col=None, na_values=['NA'], sheet_name = sheetName_NG, usecols = specialCols_NG)
+df.drop(df.columns[0], axis=1)
 #print(df)
-df.to_excel(newSheet, sheet_name= 'NATURAL_GAS', na_rep='', float_format=None, columns=None, header=True, index=True, index_label=None, startrow=0, startcol=0, engine=None, merge_cells=True, encoding=None, inf_rep='inf', verbose=True, freeze_panes=None, storage_options=None)
+df.to_excel(newSheet, sheet_name= 'NATURAL_GAS', na_rep='', float_format=None, columns=None, header=True, index=False, index_label=None, startrow=0, startcol=0, engine=None, merge_cells=True, encoding=None, inf_rep='inf', verbose=True, freeze_panes=None, storage_options=None)
 
 #Modifying the sheet for ELECTRIC_GRID table
 df = pd.read_excel(file_loc, index_col=None, na_values=['NA'], sheet_name = sheetName_EG, usecols = specialCols_EG)
+df.drop(df.columns[0], axis=1)
 #print(df)
-df.to_excel(newSheet, sheet_name= 'ELECTRIC_GRID', na_rep='', float_format=None, columns=None, header=True, index=True, index_label=None, startrow=0, startcol=0, engine=None, merge_cells=True, encoding=None, inf_rep='inf', verbose=True, freeze_panes=None, storage_options=None)
+df.to_excel(newSheet, sheet_name= 'ELECTRIC_GRID', na_rep='', float_format=None, columns=None, header=True, index=False, index_label=None, startrow=0, startcol=0, engine=None, merge_cells=True, encoding=None, inf_rep='inf', verbose=True, freeze_panes=None, storage_options=None)
 
 #Modifying the sheet for OTHER_SOURCE table
 df = pd.read_excel(file_loc, index_col=None, na_values=['NA'], sheet_name = sheetName_OS, usecols = specialCols_OS)
+df.drop(df.columns[0], axis=1)
 #print(df)
-df.to_excel(newSheet, sheet_name= 'OTHER_SOURCE', na_rep='', float_format=None, columns=None, header=True, index=True, index_label=None, startrow=0, startcol=0, engine=None, merge_cells=True, encoding=None, inf_rep='inf', verbose=True, freeze_panes=None, storage_options=None)
+df.to_excel(newSheet, sheet_name= 'OTHER_SOURCE', na_rep='', float_format=None, columns=None, header=True, index=False, index_label=None, startrow=0, startcol=0, engine=None, merge_cells=True, encoding=None, inf_rep='inf', verbose=True, freeze_panes=None, storage_options=None)
 
 #Modifying the sheet for MAPS_TO table
 df = pd.read_excel(file_loc, index_col=None, na_values=['NA'], sheet_name = sheetName_MT, usecols = specialCols_MT)
+df.drop(df.columns[0], axis=1)
 #print(df)
-df.to_excel(newSheet, sheet_name= 'MAPS_TO', na_rep='', float_format=None, columns=None, header=True, index=True, index_label=None, startrow=0, startcol=0, engine=None, merge_cells=True, encoding=None, inf_rep='inf', verbose=True, freeze_panes=None, storage_options=None)
+df.to_excel(newSheet, sheet_name= 'MAPS_TO', na_rep='', float_format=None, columns=None, header=True, index=False, index_label=None, startrow=0, startcol=0, engine=None, merge_cells=True, encoding=None, inf_rep='inf', verbose=True, freeze_panes=None, storage_options=None)
 
 newSheet.save()
