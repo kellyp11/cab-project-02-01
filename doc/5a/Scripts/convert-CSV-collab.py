@@ -41,12 +41,11 @@ sheetName_MT = ME_CONSTANT #Sheet for the MAPS_TO table
 specialCols_PB = "C, B" #Columns for the POWERED_BY table
 sheetName_PB = M_CONSTANT #Sheet for the POWERED_BY table
 
-
 #This is the code to handle the manipulation of Date Interval
 #This does not work so we're coming back to this later.
 #The format of the data works outside of the relations
 #DATE_INTERVAL and MAPS_TO works perfectly fine.
-'''
+
 idf = pd.read_excel(file_loc, index_col=None, na_values=['NA'], sheet_name = sheetName_DI, usecols = 'G, H')
 
 dates = (pd.DataFrame(columns=['StartDate'],
@@ -69,13 +68,21 @@ intervals_df = pd.DataFrame (intervals, columns = ['StartTimestamp'])
 
 #print(timestamps)
 df_ids = pd.read_excel(file_loc, index_col=None, na_values=['NA'], sheet_name = sheetName_DI, usecols = 'F')
-df_timestamps = pd.concat([df_ids, dates_df, intervals_df], axis=1)
+consIDs = []
+for x in range(1,3):
+  consID = str(df_ids.loc[x])
+  i = 0
+  while (i < 2976):
+    idSeg = consID + "-" + str(i)
+    consIDs.append(idSeg)
+    i+= 1
+
+consumptionIDs_df = pd.DataFrame (consIDs, columns = ['MeterConsumptionID']) 
+df_timestamps = pd.concat([consumptionIDs_df, dates_df, intervals_df], axis=1)
 df_timestamps.to_excel(newSheet, sheet_name= 'DATE_INTERVAL', na_rep='', float_format=None, columns=None, header=True, index=True, index_label=None, startrow=0, startcol=0, engine=None, merge_cells=True, encoding=None, inf_rep='inf', verbose=True, freeze_panes=None, storage_options=None)
 
-#idf.to_excel(newSheet, sheet_name= 'DATE_INTERVAL', na_rep='', float_format=None, columns=None, header=True, index=True, index_label=None, startrow=0, startcol=1, engine=None, merge_cells=True, encoding=None, inf_rep='inf', verbose=True, freeze_panes=None, storage_options=None)
-
 # --------------------------
-'''
+
 #Modifying the sheet for POWERED_BY table
 df = pd.read_excel(file_loc, index_col=None, na_values=['NA'], sheet_name = sheetName_PB, usecols = specialCols_PB)
 #print(df)
