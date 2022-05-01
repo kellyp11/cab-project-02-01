@@ -198,13 +198,13 @@ def questiontwo_handler():
 
     # If they select the month usage option, run the month usage sql queries.
     if (options == "monthOption"):
-        rows = connect('SELECT StartDate, Meter_Type, Usage_Amount FROM MONTH_USAGE_SOURCE WHERE meter_type IN ' + checkbox_string + ' AND EXTRACT(YEAR FROM StartDate) BETWEEN ' + request.form['start_year'] + ' AND ' + request.form['end_year'] + ' AND EXTRACT(MONTH FROM StartDate) = ' + request.form['q2monthSel'] + ' ORDER BY StartDate;')
+        rows = connect('SELECT StartDate, Meter_Type, Usage_Amount FROM MONTH_USAGE WHERE meter_type IN ' + checkbox_string + ' AND EXTRACT(YEAR FROM StartDate) BETWEEN ' + request.form['start_year'] + ' AND ' + request.form['end_year'] + ' AND EXTRACT(MONTH FROM StartDate) = ' + request.form['q2monthSel'] + ' ORDER BY StartDate;')
         heads = ['Date', 'Meter Type', 'Usage Amount']
         return render_template('my-result.html', rows=rows, heads=heads)
 
     # If they select the season usage option, run the season usage sql queries
     elif (options == "seasonOption"):
-        rows = connect('SELECT StartDate, Meter_Type, Usage_Amount, TypeOfSeason FROM SEASON_USAGE_SOURCE WHERE meter_type IN ' + checkbox_string + ' AND EXTRACT(YEAR FROM StartDate) BETWEEN ' + request.form['start_year'] + ' AND ' + request.form['end_year'] + ' AND TypeOfSeason = ' + '\'' + request.form['q2seasonSel'] + '\'' + ' ORDER BY TypeOfSeason;')
+        rows = connect('SELECT StartDate, Meter_Type, Usage_Amount, TypeOfSeason FROM SEASON_USAGE WHERE meter_type IN ' + checkbox_string + ' AND EXTRACT(YEAR FROM StartDate) BETWEEN ' + request.form['start_year'] + ' AND ' + request.form['end_year'] + ' AND TypeOfSeason = ' + '\'' + request.form['q2seasonSel'] + '\'' + ' ORDER BY TypeOfSeason;')
         heads = ['Date', 'Meter Type', 'Usage Amount', 'Season']
         return render_template('my-result.html', rows=rows, heads=heads)
 
