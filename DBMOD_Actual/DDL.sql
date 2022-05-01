@@ -73,9 +73,10 @@ FROM DATE_INTERVAL NATURAL JOIN MAPS_TO NATURAL JOIN ENERGY_SOURCE_COST NATURAL 
 GROUP BY EXTRACT(YEAR FROM StartDate), EXTRACT(MONTH FROM StartDate), Usage_Amount, Meter_Type;
 
 CREATE VIEW MONTH_USAGE_SOURCE AS
-SELECT Year, Month, SUM(Usage_Amount)
+SELECT Year, Month, SUM(Usage_Amount) AS Usage, Meter_Type
 FROM MONTH_USAGE
-GROUP BY Year, Month;
+GROUP BY Year, Month, Meter_Type
+ORDER BY Year, Month;
 
 CREATE VIEW SEASON_USAGE AS
 SELECT cast(EXTRACT(YEAR FROM StartDate) as varchar(4)) AS Year, cast(EXTRACT(MONTH FROM StartDate) as varchar(2)) AS Month, TypeOfSeason, Usage_Amount, Meter_Type
@@ -83,6 +84,7 @@ FROM DATE_INTERVAL NATURAL JOIN MAPS_TO NATURAL JOIN ENERGY_SOURCE_COST NATURAL 
 GROUP BY EXTRACT(YEAR FROM StartDate), EXTRACT(MONTH FROM StartDate), TypeOfSeason, Usage_Amount, Meter_Type;
 
 CREATE VIEW SEASON_USAGE_SOURCE AS
-SELECT Year, Month, SUM(Usage_Amount), TypeOfSeason
+SELECT Year, Month, SUM(Usage_Amount) AS Usage, TypeOfSeason, Meter_Type
 FROM SEASON_USAGE
-GROUP BY Year, Month, TypeOfSeason;
+GROUP BY Year, Month, TypeOfSeason, Meter_Type
+ORDER BY Year, Month;
