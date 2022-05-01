@@ -74,7 +74,7 @@
         <form action="/questiontwo_handler" method="POST">
           <div class="row mb-3 ps-3">
           <div class="checkq2 col-6">
-          <h4>Select an energy source: </h5>
+          <h4>Select an energy source: </h4>
           <div>
             <input type="checkbox" name="Meter_Type" value = 'Electric - Grid'>
             Electric - Grid
@@ -95,11 +95,11 @@
         <div class="fieldq2 col-6">
           <div>
             <h5> Please enter a starting year </h5>
-              <input type="number" name="start_year" min="2009" max="2022">
+              <input type="number" name="start_year" min="2009" max="2022" class="form-control w-50">
             </div>
             <div>
               <h5> Please entering an ending year </h5>
-                <input type="number" name="end_year" min="2010" max="2022">
+                <input type="number" name="end_year" min="2010" max="2022" class="form-control w-50">
             </div>
         </div>
       </div>
@@ -123,8 +123,7 @@
         <div class="dropdown col-6" name = "MonthSelection" id = "monthSel" style = "display:none">
           <p> Please select a month: </p>
           <select name="q2monthSel" class="btn btn-secondary" aria-label="Default select example">
-            <option selected>Month</option>
-            <option value="01">January</option>
+            <option value="01" selected>January</option>
             <option value="02">February</option>
             <option value="03">March</option>
             <option value="04">April</option>
@@ -142,8 +141,7 @@
         <div class="dropdown col-6" name = "SeasonSelection" id = "seasonSel" style = "display:none">
           <p> Please select a season: </p>
           <select name="q2seasonSel" class="btn btn-secondary" aria-label="Default select example">
-            <option selected>Season</option>
-            <option value="Heating">Heating</option>
+            <option value="Heating" selected>Heating</option>
             <option value="Cooling">Cooling</option>
           </select>
         </div>

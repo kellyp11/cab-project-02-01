@@ -79,7 +79,7 @@
         <form action="/questionone_handler" method="POST">
           <div class="row mb-3 ps-3">
           <div class="checkq1 col-4">
-          <h4>Select an energy source: </h5>
+          <h5>Select an energy source: </h5>
           <div>
             <input type="checkbox" name="Meter_Type" value = 'Electric - Grid'>
             Electric - Grid
@@ -113,17 +113,17 @@
           </div>
         </div>
 
-        <div class="fieldq1 col-4" id = "base">
+        <div class="fieldq1 col-4 ps-3" id = "base">
         </div>
 
         <div class="fieldq1 col-4" id = "yearSel" style = "display:none">
             <div>
             <h5> Please enter a starting year: </h5>
-              <input type="number" name="yearSel_startyear" min="2009" max="2022">
+              <input type="number" name="yearSel_startyear" min="2009" max="2022" class="form-control w-50">
             </div>
             <div>
-              <h5> Please entering an ending year: </h5>
-                <input type="number" name="yearSel_endyear" min="2010" max="2022">
+              <h5> Please enter an ending year: </h5>
+                <input type="number" name="yearSel_endyear" min="2010" max="2022" class="form-control w-50">
             </div>
         </div>
 
@@ -160,7 +160,7 @@
         </div>
 
       </div>
-      <div class="row ps-3">
+      <div class="row ps-2 m-auto col-4 mb-3">
         <div>
           <input type="checkbox" name="Meter_Cost" value = 'Meter Cost' class="m-auto">
           Show Meter Cost?
