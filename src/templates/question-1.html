@@ -42,6 +42,17 @@
             }
 
           }
+
+          function appearCheck() {
+            var meterCheck = document.getElementById("meterCheck").checked;
+            var q1checkbox = document.getElementById("q1check")
+            var checkbase = document.getElementById("checkbase");
+
+            if (meterCheck) {
+              checkbase.innerHTML = q1checkbox.innerHTML;
+            }
+
+          }
         </script>
     
       </head>
@@ -78,7 +89,9 @@
     -->  
         <form action="/questionone_handler" method="POST">
           <div class="row mb-3 ps-3">
-          <div class="checkq1 col-4">
+          <div class="fieldq1 col-4 ps-3" id = "checkbase">
+          </div>
+          <div class="checkq1 col-4" id="q1check" style="display: none">
           <h5>Select an energy source: </h5>
           <div>
             <input type="checkbox" name="Meter_Type" value = 'Electric - Grid'>
@@ -162,7 +175,7 @@
       </div>
       <div class="row ps-2 m-auto col-4 mb-3">
         <div>
-          <input type="checkbox" name="Meter_Cost" value = 'Meter Cost' class="m-auto">
+          <input type="checkbox" name="Meter_Cost" value = 'Meter Cost' class="m-auto" id="meterCheck" onclick = "appearCheck()">
           Show Meter Cost?
         </div>
       </div>
