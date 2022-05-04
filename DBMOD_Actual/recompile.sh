@@ -4,10 +4,10 @@
 psql -d ESPA_DB_FULL -f espa_drop.sql
 
 #this line recreates the new tables
-psql -d ESPA_DB_FULL -f ../DDL-Commands/DDL.sql
+psql -d ESPA_DB_FULL -f DDL.sql
 
 #this line populates the tables
-psql -d ESPA_DB_FULL -f ../CSV-Files/Testing-Data/espa_load.sql
+psql -d ESPA_DB_FULL -f espa_load.sql
 
 #This line can be uncommented out if desired. Otherwise, this line can be used to insert SQL queries.
 psql ESPA_DB_FULL

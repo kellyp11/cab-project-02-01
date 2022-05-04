@@ -8,14 +8,14 @@ CREATE TABLE BUILDING_TYPE (Name varchar(50) PRIMARY KEY references BUILDING(Nam
 
 CREATE TABLE ENERGY_SOURCE_COST (Portfolio_Manager_Meter_ID varchar(30) REFERENCES ENERGY_SOURCE(Portfolio_Manager_Meter_ID) PRIMARY KEY, cost float, Usage_Amount float);
 
-CREATE TABLE FUEL_OIL (Portfolio_Manager_Meter_ID varchar(30) REFERENCES ENERGY_SOURCE(Portfolio_Manager_Meter_ID), Units varchar(10), MeterType varchar(30));
+CREATE TABLE FUEL_OIL (Portfolio_Manager_Meter_ID varchar(30) REFERENCES ENERGY_SOURCE(Portfolio_Manager_Meter_ID), Units varchar(25), MeterType varchar(30));
 
-CREATE TABLE NATURAL_GAS (Portfolio_Manager_Meter_ID varchar(30) REFERENCES ENERGY_SOURCE(Portfolio_Manager_Meter_ID), Units varchar(10), MeterType varchar(30));
+CREATE TABLE NATURAL_GAS (Portfolio_Manager_Meter_ID varchar(30) REFERENCES ENERGY_SOURCE(Portfolio_Manager_Meter_ID), Units varchar(25), MeterType varchar(30));
 
-CREATE TABLE ELECTRIC_GRID (Portfolio_Manager_Meter_ID varchar(30) REFERENCES ENERGY_SOURCE(Portfolio_Manager_Meter_ID), Units varchar(10), MeterType varchar(30));
+CREATE TABLE ELECTRIC_GRID (Portfolio_Manager_Meter_ID varchar(30) REFERENCES ENERGY_SOURCE(Portfolio_Manager_Meter_ID), Units varchar(25), MeterType varchar(30));
 
-CREATE TABLE OTHER_SOURCE (Portfolio_Manager_Meter_ID varchar(30) REFERENCES ENERGY_SOURCE(Portfolio_Manager_Meter_ID), Units varchar(10), MeterType varchar(30));
+CREATE TABLE OTHER_SOURCE (Portfolio_Manager_Meter_ID varchar(30) REFERENCES ENERGY_SOURCE(Portfolio_Manager_Meter_ID), Units varchar(25), MeterType varchar(30));
 
-CREATE TABLE MAPS_TO (Meter_Consumption_ID varchar(20) REFERENCES DATE_INTERVAL(Meter_Consumption_ID), Portfolio_Manager_Meter_ID int REFERENCES ENERGY_SOURCE(Portfolio_Manager_Meter_ID), PRIMARY KEY (Meter_Consumption_ID, Portfolio_Manager_Meter_ID));
+CREATE TABLE MAPS_TO (Meter_Consumption_ID varchar(20) REFERENCES DATE_INTERVAL(Meter_Consumption_ID), Portfolio_Manager_Meter_ID varchar(30) REFERENCES ENERGY_SOURCE(Portfolio_Manager_Meter_ID), PRIMARY KEY (Meter_Consumption_ID, Portfolio_Manager_Meter_ID));
 
 CREATE TABLE POWERED_BY (Portfolio_Manager_Meter_ID varchar(30) REFERENCES ENERGY_SOURCE(Portfolio_Manager_Meter_ID), Portfolio_Manager_ID varchar(30) REFERENCES BUILDING(Portfolio_Manager_ID), PRIMARY KEY (Portfolio_Manager_ID, Portfolio_Manager_Meter_ID));
