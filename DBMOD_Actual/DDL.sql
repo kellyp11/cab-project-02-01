@@ -1,24 +1,24 @@
 CREATE TABLE DATE_INTERVAL (Meter_Consumption_ID varchar(20) UNIQUE PRIMARY KEY, StartDate date, TypeOfSeason varchar(7) , StartTimestamp time);
 
-CREATE TABLE BUILDING (Portfolio_Manager_ID int UNIQUE, Name varchar(30) UNIQUE, Construction_Status varchar(50), Gross_Floor_Area int, PRIMARY KEY (Portfolio_Manager_ID, Name));
+CREATE TABLE BUILDING (Name varchar(50) UNIQUE, Portfolio_Manager_ID varchar(30) UNIQUE, Construction_Status varchar(50), Gross_Floor_Area int, PRIMARY KEY (Portfolio_Manager_ID, Name));
 
-CREATE TABLE ENERGY_SOURCE (Portfolio_Manager_Meter_ID int UNIQUE, MeterName varchar(30) UNIQUE, Meter_Type varchar(30), PRIMARY KEY (Portfolio_Manager_Meter_ID, MeterName));
+CREATE TABLE ENERGY_SOURCE (Portfolio_Manager_Meter_ID varchar(30) UNIQUE, MeterName varchar(30) UNIQUE, Meter_Type varchar(30), PRIMARY KEY (Portfolio_Manager_Meter_ID, MeterName));
 
 CREATE TABLE BUILDING_TYPE (Name varchar(50) PRIMARY KEY references BUILDING(Name), Property_Type varchar(30));
 
-CREATE TABLE ENERGY_SOURCE_COST (Portfolio_Manager_Meter_ID int REFERENCES ENERGY_SOURCE(Portfolio_Manager_Meter_ID) PRIMARY KEY, cost float, Usage_Amount int);
+CREATE TABLE ENERGY_SOURCE_COST (Portfolio_Manager_Meter_ID varchar(30) REFERENCES ENERGY_SOURCE(Portfolio_Manager_Meter_ID) PRIMARY KEY, cost float, Usage_Amount float);
 
-CREATE TABLE FUEL_OIL (Portfolio_Manager_Meter_ID int REFERENCES ENERGY_SOURCE(Portfolio_Manager_Meter_ID), Units varchar(10), MeterType varchar(30));
+CREATE TABLE FUEL_OIL (Portfolio_Manager_Meter_ID varchar(30) REFERENCES ENERGY_SOURCE(Portfolio_Manager_Meter_ID), MeterType varchar(30), Units varchar(26));
 
-CREATE TABLE NATURAL_GAS (Portfolio_Manager_Meter_ID int REFERENCES ENERGY_SOURCE(Portfolio_Manager_Meter_ID), Units varchar(10), MeterType varchar(30));
+CREATE TABLE NATURAL_GAS (Portfolio_Manager_Meter_ID varchar(30) REFERENCES ENERGY_SOURCE(Portfolio_Manager_Meter_ID), MeterType varchar(30), Units varchar(26));
 
-CREATE TABLE ELECTRIC_GRID (Portfolio_Manager_Meter_ID int REFERENCES ENERGY_SOURCE(Portfolio_Manager_Meter_ID), Units varchar(10), MeterType varchar(30));
+CREATE TABLE ELECTRIC_GRID (Portfolio_Manager_Meter_ID varchar(30) REFERENCES ENERGY_SOURCE(Portfolio_Manager_Meter_ID), MeterType varchar(30), Units varchar(26));
 
-CREATE TABLE OTHER_SOURCE (Portfolio_Manager_Meter_ID int REFERENCES ENERGY_SOURCE(Portfolio_Manager_Meter_ID), Units varchar(10), MeterType varchar(30));
+CREATE TABLE OTHER_SOURCE (Portfolio_Manager_Meter_ID varchar(30) REFERENCES ENERGY_SOURCE(Portfolio_Manager_Meter_ID), MeterType varchar(30), Units varchar(26));
 
-CREATE TABLE MAPS_TO (Meter_Consumption_ID varchar(20) REFERENCES DATE_INTERVAL(Meter_Consumption_ID), Portfolio_Manager_Meter_ID int REFERENCES ENERGY_SOURCE(Portfolio_Manager_Meter_ID), PRIMARY KEY (Meter_Consumption_ID, Portfolio_Manager_Meter_ID));
+CREATE TABLE MAPS_TO (Portfolio_Manager_Meter_ID varchar(30) REFERENCES ENERGY_SOURCE(Portfolio_Manager_Meter_ID), Meter_Consumption_ID varchar(20) REFERENCES DATE_INTERVAL(Meter_Consumption_ID), PRIMARY KEY (Portfolio_Manager_Meter_ID, Meter_Consumption_ID));
 
-CREATE TABLE POWERED_BY (Portfolio_Manager_Meter_ID int REFERENCES ENERGY_SOURCE(Portfolio_Manager_Meter_ID), Portfolio_Manager_ID int REFERENCES BUILDING(Portfolio_Manager_ID), PRIMARY KEY (Portfolio_Manager_ID, Portfolio_Manager_Meter_ID));
+CREATE TABLE POWERED_BY (Portfolio_Manager_ID varchar(30) REFERENCES BUILDING(Portfolio_Manager_ID), Portfolio_Manager_Meter_ID varchar(30) REFERENCES ENERGY_SOURCE(Portfolio_Manager_Meter_ID), PRIMARY KEY (Portfolio_Manager_ID, Portfolio_Manager_Meter_ID));
 
 CREATE VIEW YEAR_ENERGY_SOURCE_KBTU_COST AS
 SELECT cast(EXTRACT(YEAR FROM StartDate) as varchar(4)) AS Year, Cost, Usage_Amount, Usage_Amount/cast(SUM(Cost) as float) AS kbtuPerCost, Meter_Type
@@ -73,9 +73,10 @@ FROM DATE_INTERVAL NATURAL JOIN MAPS_TO NATURAL JOIN ENERGY_SOURCE_COST NATURAL 
 GROUP BY EXTRACT(YEAR FROM StartDate), EXTRACT(MONTH FROM StartDate), Usage_Amount, Meter_Type;
 
 CREATE VIEW MONTH_USAGE_SOURCE AS
-SELECT Year, Month, SUM(Usage_Amount)
+SELECT Year, Month, SUM(Usage_Amount) AS Usage, Meter_Type
 FROM MONTH_USAGE
-GROUP BY Year, Month;
+GROUP BY Year, Month, Meter_Type
+ORDER BY Year, Month;
 
 CREATE VIEW SEASON_USAGE AS
 SELECT cast(EXTRACT(YEAR FROM StartDate) as varchar(4)) AS Year, cast(EXTRACT(MONTH FROM StartDate) as varchar(2)) AS Month, TypeOfSeason, Usage_Amount, Meter_Type
@@ -83,6 +84,7 @@ FROM DATE_INTERVAL NATURAL JOIN MAPS_TO NATURAL JOIN ENERGY_SOURCE_COST NATURAL 
 GROUP BY EXTRACT(YEAR FROM StartDate), EXTRACT(MONTH FROM StartDate), TypeOfSeason, Usage_Amount, Meter_Type;
 
 CREATE VIEW SEASON_USAGE_SOURCE AS
-SELECT Year, Month, SUM(Usage_Amount), TypeOfSeason
+SELECT Year, Month, SUM(Usage_Amount) AS Usage, TypeOfSeason, Meter_Type
 FROM SEASON_USAGE
-GROUP BY Year, Month, TypeOfSeason;
+GROUP BY Year, Month, TypeOfSeason, Meter_Type
+ORDER BY Year, Month;
