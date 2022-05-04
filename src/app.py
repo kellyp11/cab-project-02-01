@@ -143,14 +143,14 @@ def questioneone_handler():
 
     # If they select the monthly option, run the year sql queries.    
     elif (options == "MONTH_ENERGY_SOURCE_KBTU_COST"):
-        rows = connect('SELECT year, month, cost, usage_amount, kbtupercost FROM MONTH_SOURCE WHERE CAST(year AS int) = ' + request.form['monthSel_year'] + ' AND CAST(month AS int) BETWEEN ' + request.form['monthSel_startmonth'] + ' AND ' + request.form['monthSel_endmonth'] + ' ORDER BY year, month;')
+        rows = connect('SELECT year, month, cost, usage_amount, kbtupercost FROM MONTH_SOURCE WHERE CAST(year AS int) = ' + request.form['monthSel_year'] + ' AND CAST(month AS int) BETWEEN ' + request.form['monthSel_startmonth'] + ' AND ' + request.form['monthSel_endmonth'] + ' ORDER BY year, month ASC;')
         heads = ['Year', 'Month', 'Total Cost', 'Usage Amount', 'Kbtu/Cost']
         meter_rows = ""
         meter_heads = ""
 
         # If they select show meter costs, show that too
         if checkboxes and request.form.getlist('Meter_Cost'):
-            meter_rows = connect('SELECT year, month, meter_type, cost FROM MONTH_METER_COST WHERE meter_type IN ' + checkbox_string + ' AND ' + 'CAST(month AS int) BETWEEN ' + request.form['monthSel_startmonth'] + ' AND ' + request.form['monthSel_endmonth'] + ' AND CAST(year as int) = ' + request.form['monthSel_year'] + 'ORDER BY year, month;')
+            meter_rows = connect('SELECT year, month, meter_type, cost FROM MONTH_METER_COST WHERE meter_type IN ' + checkbox_string + ' AND ' + 'CAST(month AS int) BETWEEN ' + request.form['monthSel_startmonth'] + ' AND ' + request.form['monthSel_endmonth'] + ' AND CAST(year as int) = ' + request.form['monthSel_year'] + 'ORDER BY year, month ASC;')
             meter_heads = ['Year', 'Month', 'Meter Type', 'Cost']
         return render_template('my-result.html', rows=rows, heads=heads, meter_rows=meter_rows, meter_heads=meter_heads)
 
