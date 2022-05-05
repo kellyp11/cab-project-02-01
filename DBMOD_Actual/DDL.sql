@@ -26,7 +26,7 @@ FROM DATE_INTERVAL NATURAL JOIN MAPS_TO NATURAL JOIN ENERGY_SOURCE_COST NATURAL 
 GROUP BY Year, Cost, Usage_Amount, Meter_Type;
 
 CREATE VIEW YEAR_SOURCE AS
-SELECT Year, SUM(Cost) AS Cost, SUM(Usage_Amount) AS Usage_Amount,(SUM(Usage_Amount)/cast(SUM(Cost) as float)) AS kbtuPerCost
+SELECT Year, SUM(Cost)::Numeric::money AS Cost, ROUND(SUM(Usage_Amount)::Numeric, 2) AS Usage_Amount, ROUND((SUM(Usage_Amount)/SUM(Cost))::Numeric, 2) AS kbtuPerCost
 FROM YEAR_ENERGY_SOURCE_KBTU_COST
 GROUP BY Year;
 
@@ -36,7 +36,7 @@ FROM DATE_INTERVAL NATURAL JOIN MAPS_TO NATURAL JOIN ENERGY_SOURCE_COST NATURAL 
 GROUP BY Year, Month, Cost, Usage_Amount, Meter_Type;
 
 CREATE VIEW MONTH_SOURCE AS
-SELECT Year, Month, SUM(Cost) AS Cost, SUM(Usage_Amount) AS Usage_Amount, (SUM(Usage_Amount)/cast(SUM(Cost) as float)) AS kbtuPerCost
+SELECT Year, Month, SUM(Cost)::Numeric::money AS Cost, ROUND(SUM(Usage_Amount)::Numeric, 2) AS Usage_Amount, ROUND((SUM(Usage_Amount)/SUM(Cost))::Numeric, 2) AS kbtuPerCost
 FROM MONTH_ENERGY_SOURCE_KBTU_COST
 GROUP BY Year, Month;
 
@@ -47,7 +47,7 @@ GROUP BY StartDate, StartTimestamp, Usage_Amount, Cost, Meter_Type
 ORDER BY StartDate ASC;
 
 CREATE VIEW MINUTE_SOURCE AS
-SELECT StartDate, StartTimestamp, SUM(cost) AS Cost, SUM(Usage_Amt) AS Usage_Amt, (SUM(Usage_Amt)/cast(SUM(Cost) as float)) AS kbtuPerCost
+SELECT StartDate, StartTimestamp, SUM(cost) AS Cost, SUM(Usage_Amt) AS Usage_Amt, SUM(Usage_Amt)/cast(SUM(Cost) as float) AS kbtuPerCost
 FROM MINUTE_ENERGY_SOURCE_KBTU_COST
 GROUP BY StartDate, StartTimestamp;
 
@@ -57,17 +57,17 @@ FROM DATE_INTERVAL NATURAL JOIN MAPS_TO NATURAL JOIN ENERGY_SOURCE_COST NATURAL 
 GROUP BY Year, Meter_Type, Cost;
 
 CREATE VIEW YEAR_METER_COST_SOURCE AS
-SELECT YEAR, Meter_Type, SUM(Cost) AS Cost
+SELECT YEAR, Meter_Type, SUM(Cost)::Numeric::money AS Cost
 FROM YEAR_METER_COST
 GROUP BY YEAR, Meter_Type;
 
 CREATE VIEW MONTH_METER_COST AS
-SELECT cast(EXTRACT(YEAR FROM StartDate) as int) AS Year, cast(EXTRACT(MONTH FROM StartDate) as int) AS Month, Meter_Type, Cost
+SELECT cast(EXTRACT(YEAR FROM StartDate) as int) AS Year, cast(EXTRACT(MONTH FROM StartDate) as int) AS Month, Meter_Type, Cost::Numeric::money
 FROM DATE_INTERVAL NATURAL JOIN MAPS_TO NATURAL JOIN ENERGY_SOURCE_COST NATURAL JOIN ENERGY_SOURCE
 GROUP BY Year, Month, Meter_Type, Cost;
 
 CREATE VIEW MINUTE_METER_COST AS
-SELECT StartDate, StartTimestamp, Meter_Type, cast(Cost as float)/ (30*24*4) AS Cost
+SELECT StartDate, StartTimestamp, Meter_Type, (cast(Cost as float)/ (30*24*4)) AS Cost
 FROM DATE_INTERVAL NATURAL JOIN MAPS_TO NATURAL JOIN ENERGY_SOURCE_COST NATURAL JOIN ENERGY_SOURCE
 GROUP BY StartDate, StartTimestamp, Meter_Type, Cost
 ORDER BY StartDate ASC;
@@ -78,7 +78,7 @@ FROM DATE_INTERVAL NATURAL JOIN MAPS_TO NATURAL JOIN ENERGY_SOURCE_COST NATURAL 
 GROUP BY Year, Month, Usage_Amount, Meter_Type;
 
 CREATE VIEW MONTH_USAGE_SOURCE AS
-SELECT Year, Month, SUM(Usage_Amount) AS Usage, Meter_Type
+SELECT Year, Month, ROUND(SUM(Usage_Amount)::Numeric, 2) AS Usage, Meter_Type
 FROM MONTH_USAGE
 GROUP BY Year, Month, Meter_Type
 ORDER BY Year, Month;
@@ -89,7 +89,7 @@ FROM DATE_INTERVAL NATURAL JOIN MAPS_TO NATURAL JOIN ENERGY_SOURCE_COST NATURAL 
 GROUP BY Year, Month, TypeOfSeason, Usage_Amount, Meter_Type;
 
 CREATE VIEW SEASON_USAGE_SOURCE AS
-SELECT Year, SUM(Usage_Amount) AS Usage, TypeOfSeason, Meter_Type
+SELECT Year, ROUND(SUM(Usage_Amount)::Numeric, 2) AS Usage, TypeOfSeason, Meter_Type
 FROM SEASON_USAGE
 GROUP BY Year, TypeOfSeason, Meter_Type
 ORDER BY Year;
