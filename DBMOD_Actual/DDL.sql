@@ -21,9 +21,9 @@ CREATE TABLE MAPS_TO (Portfolio_Manager_Meter_ID varchar(30) REFERENCES ENERGY_S
 CREATE TABLE POWERED_BY (Portfolio_Manager_ID varchar(30) REFERENCES BUILDING(Portfolio_Manager_ID), Portfolio_Manager_Meter_ID varchar(30) REFERENCES ENERGY_SOURCE(Portfolio_Manager_Meter_ID), PRIMARY KEY (Portfolio_Manager_ID, Portfolio_Manager_Meter_ID));
 
 CREATE VIEW YEAR_ENERGY_SOURCE_KBTU_COST AS
-SELECT cast(EXTRACT(YEAR FROM StartDate) as varchar(4)) AS Year, Cost, Usage_Amount, Usage_Amount/cast(SUM(Cost) as float) AS kbtuPerCost, Meter_Type
+SELECT cast(EXTRACT(YEAR FROM StartDate) as int) AS Year, Cost, Usage_Amount, Usage_Amount/cast(SUM(Cost) as float) AS kbtuPerCost, Meter_Type
 FROM DATE_INTERVAL NATURAL JOIN MAPS_TO NATURAL JOIN ENERGY_SOURCE_COST NATURAL JOIN ENERGY_SOURCE
-GROUP BY EXTRACT(YEAR FROM StartDate), Cost, Usage_Amount, Meter_Type;
+GROUP BY Year, Cost, Usage_Amount, Meter_Type;
 
 CREATE VIEW YEAR_SOURCE AS
 SELECT Year, SUM(Cost) AS Cost, SUM(Usage_Amount) AS Usage_Amount,(SUM(Usage_Amount)/cast(SUM(Cost) as float)) AS kbtuPerCost
@@ -31,9 +31,9 @@ FROM YEAR_ENERGY_SOURCE_KBTU_COST
 GROUP BY Year;
 
 CREATE VIEW MONTH_ENERGY_SOURCE_KBTU_COST AS
-SELECT cast(EXTRACT(YEAR FROM StartDate) as varchar(4)) AS Year, cast(EXTRACT(MONTH FROM StartDate) as varchar(2)) AS Month, Cost, Usage_Amount, Usage_Amount/cast(SUM(Cost) as float) AS kbtuPerCost, Meter_Type
+SELECT cast(EXTRACT(YEAR FROM StartDate) as int) AS Year, cast(EXTRACT(MONTH FROM StartDate) as int) AS Month, Cost, Usage_Amount, Usage_Amount/cast(SUM(Cost) as float) AS kbtuPerCost, Meter_Type
 FROM DATE_INTERVAL NATURAL JOIN MAPS_TO NATURAL JOIN ENERGY_SOURCE_COST NATURAL JOIN ENERGY_SOURCE
-GROUP BY EXTRACT(YEAR FROM StartDate), EXTRACT(MONTH FROM StartDate), Cost, Usage_Amount, Meter_Type;
+GROUP BY Year, Month, Cost, Usage_Amount, Meter_Type;
 
 CREATE VIEW MONTH_SOURCE AS
 SELECT Year, Month, SUM(Cost) AS Cost, SUM(Usage_Amount) AS Usage_Amount, (SUM(Usage_Amount)/cast(SUM(Cost) as float)) AS kbtuPerCost
@@ -52,9 +52,9 @@ FROM MINUTE_ENERGY_SOURCE_KBTU_COST
 GROUP BY StartDate, StartTimestamp;
 
 CREATE VIEW YEAR_METER_COST AS
-SELECT cast(EXTRACT(YEAR FROM StartDate) as varchar(4)) AS YEAR, Meter_Type, Cost
+SELECT cast(EXTRACT(YEAR FROM StartDate) as int) AS Year, Meter_Type, Cost
 FROM DATE_INTERVAL NATURAL JOIN MAPS_TO NATURAL JOIN ENERGY_SOURCE_COST NATURAL JOIN ENERGY_SOURCE
-GROUP BY EXTRACT(YEAR FROM StartDate), Meter_Type, Cost;
+GROUP BY Year, Meter_Type, Cost;
 
 CREATE VIEW YEAR_METER_COST_SOURCE AS
 SELECT YEAR, Meter_Type, SUM(Cost) AS Cost
@@ -62,9 +62,9 @@ FROM YEAR_METER_COST
 GROUP BY YEAR, Meter_Type;
 
 CREATE VIEW MONTH_METER_COST AS
-SELECT cast(EXTRACT(YEAR FROM StartDate) as varchar(4)) AS YEAR, cast(EXTRACT(MONTH FROM StartDate) as varchar(2)) AS MONTH, Meter_Type, Cost
+SELECT cast(EXTRACT(YEAR FROM StartDate) as int) AS Year, cast(EXTRACT(MONTH FROM StartDate) as int) AS Month, Meter_Type, Cost
 FROM DATE_INTERVAL NATURAL JOIN MAPS_TO NATURAL JOIN ENERGY_SOURCE_COST NATURAL JOIN ENERGY_SOURCE
-GROUP BY EXTRACT(YEAR FROM StartDate), EXTRACT(MONTH FROM StartDate), Meter_Type, Cost;
+GROUP BY Year, Month, Meter_Type, Cost;
 
 CREATE VIEW MINUTE_METER_COST AS
 SELECT StartDate, StartTimestamp, Meter_Type, cast(Cost as float)/ (30*24*4) AS Cost
@@ -73,9 +73,9 @@ GROUP BY StartDate, StartTimestamp, Meter_Type, Cost
 ORDER BY StartDate ASC;
 
 CREATE VIEW MONTH_USAGE AS
-SELECT cast(EXTRACT(YEAR FROM StartDate) as varchar(4)) AS Year, cast(EXTRACT(MONTH FROM StartDate) as varchar(2)) AS Month, Meter_Type, Usage_Amount
+SELECT cast(EXTRACT(YEAR FROM StartDate) as int) AS Year, cast(EXTRACT(MONTH FROM StartDate) as int) AS Month, Meter_Type, Usage_Amount
 FROM DATE_INTERVAL NATURAL JOIN MAPS_TO NATURAL JOIN ENERGY_SOURCE_COST NATURAL JOIN ENERGY_SOURCE
-GROUP BY EXTRACT(YEAR FROM StartDate), EXTRACT(MONTH FROM StartDate), Usage_Amount, Meter_Type;
+GROUP BY Year, Month, Usage_Amount, Meter_Type;
 
 CREATE VIEW MONTH_USAGE_SOURCE AS
 SELECT Year, Month, SUM(Usage_Amount) AS Usage, Meter_Type
@@ -84,9 +84,9 @@ GROUP BY Year, Month, Meter_Type
 ORDER BY Year, Month;
 
 CREATE VIEW SEASON_USAGE AS
-SELECT cast(EXTRACT(YEAR FROM StartDate) as varchar(4)) AS Year, cast(EXTRACT(MONTH FROM StartDate) as varchar(2)) AS Month, TypeOfSeason, Usage_Amount, Meter_Type
+SELECT cast(EXTRACT(YEAR FROM StartDate) as int) AS Year, cast(EXTRACT(MONTH FROM StartDate) as int) AS Month, TypeOfSeason, Usage_Amount, Meter_Type
 FROM DATE_INTERVAL NATURAL JOIN MAPS_TO NATURAL JOIN ENERGY_SOURCE_COST NATURAL JOIN ENERGY_SOURCE
-GROUP BY EXTRACT(YEAR FROM StartDate), EXTRACT(MONTH FROM StartDate), TypeOfSeason, Usage_Amount, Meter_Type;
+GROUP BY Year, Month, TypeOfSeason, Usage_Amount, Meter_Type;
 
 CREATE VIEW SEASON_USAGE_SOURCE AS
 SELECT Year, SUM(Usage_Amount) AS Usage, TypeOfSeason, Meter_Type
